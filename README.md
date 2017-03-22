@@ -1,8 +1,10 @@
 # BatchUTILS
 Windows batch files I use to make building OpenCPN and other things easier.
 
+I put all of these files in a folder that is on my PATH.
+
 Osetup.bat - Called by C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat to add other utilities to the PATH.
-             Edit the VsDevCmd.bat file in administrator mode. Don't use Osetup as it is but rather change it to match where your
+             Edit the VsDevCmd.bat file in administrator mode. Don't use Osetup.bat as it is but rather change it to match where your
              programming utilities are installed.
              
 build.bat - Builds release version of OpenCPN from the VS command prompt. Optionally will create an installer package.
