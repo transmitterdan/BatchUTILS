@@ -23,5 +23,5 @@
 @if exist "%ProgramFiles%\Notepad++" set "PATH=%ProgramFiles%\Notepad++;%PATH%"
 @rem Bakefile
 @rem -------------------
-@if exist "e:\storage\transmitterdan\bakefile-1.2.5.1_beta-win" set "PATH=e:\storage\transmitterdanbakefile-1.2.5.1_beta-win;%PATH%"
+@if exist "e:\storage\transmitterdan\bakefile-1.2.5.1_beta-win" set "PATH=e:\storage\transmitterdan\bakefile-1.2.5.1_beta-win;%PATH%"
 @exit /B 0
