@@ -4,7 +4,6 @@ cmake --build . --config release --target %1
 if %ERRORLEVEL% GTR 0 goto quit
 goto install
 :notarget
-call cleanPlugins.bat
 cmake --build . --config release
 if %ERRORLEVEL% GTR 0 goto quit
 call docopyAll Release
