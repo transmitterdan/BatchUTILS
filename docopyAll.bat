@@ -70,6 +70,13 @@ xcopy /Y /Q /H /E /K /I  ..\data\sounds %rdir1%\sounds
 xcopy /Y /Q /H /E /K /I  ..\data\tcdata %rdir1%\tcdata
 xcopy /Y /Q /H /E /K /I  ..\data\wvsdata %rdir1%\wvsdata
 
+for /d %%a in (
+  "..\build\_CPack_Packages\win32\NSIS\opencpn_*_setup"
+) do set "ShareFolder=%%~fa\share"
+
+if not exist %ShareFolder% goto copy_crashrpt
+xcopy /Y /Q /H /E /K /I %ShareFolder% %rdir1%\share
+
 :copy_crashrpt
 @echo "Copying Crash Reporter"
 xcopy /Y /Q /H /E /K /I ..\buildwin\crashrpt\*.dll %rdir1%
