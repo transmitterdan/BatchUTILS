@@ -26,7 +26,7 @@ set pld1=..\build\%1\plugins
 
 del /f %rdir1%\*.dll
 copy /Y /V ..\buildwin\gtk\*.dll %rdir1%
-copy /Y /V ..\buildwin\expat-2.1.0\*.dll %rdir%
+copy /Y /V ..\buildwin\expat-2.1.0\*.dll %rdir1%
 copy /Y /V ..\buildwin\*.dll %rdir1%
 copy /Y /V ..\buildwin\vc\*.dll %rdir1%
 if not "%1" == "release" if not "%1" == "Release" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*ud_*.dll %rdir1%
