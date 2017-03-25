@@ -8,7 +8,11 @@ git clone https://github.com/%1/OpenCPN.git
 if %ERRORLEVEL% GTR 0 goto quit
 pushd opencpn
 git fetch --all
-git remote add upstream https://github.com/opencpn/OpenCPN.git
+if not "%1" == "opencpn" if not "%1" == "OpenCPN" goto setUsptream
+goto checkout
+:setUsptream
+git remote add upstream https://github.com/OpenCPN/OpenCPN.git
+:checkout
 git checkout master
 mkdir build
 powershell -Command "(New-Object Net.WebClient).DownloadFile('http://sourceforge.net/projects/opencpnplugins/files/opencpn_packaging_data/OpenCPN_buildwin.7z/download', 'OpenCPN_buildwin.7z')"

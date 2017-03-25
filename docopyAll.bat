@@ -8,24 +8,18 @@ rem copy dependent files into the build\debug tree so OpenCPN will run in debug 
 rem mode.                                                                           *
 rem If the argument is "Release" (without ") then it will copy dependent files      *
 rem into the build\Release folder under the build folder.                           *
-rem                                                                                 *
-rem NOTE: You must call cleanPlugins.bat before building OpenCPN!!!                 *
-rem       Then you can call docopy.bat release | debug                              *
-rem                                                                                 *
-rem NOTE: This moves files into the folder under build. Therefore, you must start   *
-rem       OpenCPN.exe with the -p option. That way it will use the proper folder for*
-rem       obtaining the .ini file and other key data files. You can set the startup *
-rem       command line option in Visual Studio configuration properties Debugging   *
-rem       section. Be sure to put -p in the Command Arguments option.               *
 rem *********************************************************************************
 if "%1"=="" goto usage
 if not exist ..\build\%1 goto usage
 if not "%1" == "Debug" if not "%1" == "debug" goto normal
+if not "%1" == "Release" if not "%1" == "release" goto debug
 :debug
+if not "%1" == "Debug" if not "%1" == "debug" goto usage
 set rdir1=..\build\%1
 set pld1=..\build\%1\plugins
 goto go
 :normal
+if not "%1" == "Release" if not "%1" == "release" goto usage
 set rdir1=..\build\%1
 set pld1=..\build\%1\plugins
 :go
