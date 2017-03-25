@@ -68,7 +68,7 @@ for /d %%a in (
   "..\build\_CPack_Packages\win32\NSIS\opencpn_*_setup"
 ) do set "ShareFolder=%%~fa\share"
 
-if not exist %ShareFolder% goto copy_crashrpt
+if not exist "%ShareFolder%" goto copy_crashrpt
 xcopy /Y /Q /H /E /K /I %ShareFolder% %rdir1%\share
 
 :copy_crashrpt
