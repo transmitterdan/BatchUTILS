@@ -4,8 +4,8 @@
 @if exist "C:\wxWidgets-3.0.2" set "WXDIR=C:\wxWidgets-3.0.2"
 @if exist "C:\wxWidgets-3.1.0" set "WXDIR=C:\wxWidgets-3.1.0"
 @if exist "C:\storage\transmitterdan\wxWidgets-3.0.2\" set WXDIR=C:\storage\transmitterdan\wxWidgets-3.0.2
-@if exist "C:\storage\transmitterdan\wxwidgets\" set WXDIR=C:\storage\transmitterdan\wxwidgets
-@set "PATH=%WXDIR%;%WXDIR%\lib\vc_dll;C:\storage\transmitterdan\BatchUTILS;%PATH%"
+@if exist "E:\storage\transmitterdan\wxwidgets\" set WXDIR=E:\storage\transmitterdan\wxwidgets
+@set "PATH=%WXDIR%;%WXDIR%\lib\vc_dll;E:\storage\transmitterdan\BatchUTILS;%PATH%"
 @rem POedit
 @rem -------------------
 @if exist "%ProgramFiles%\Poedit" set "PATH=%ProgramFiles%\Poedit\GettextTools\bin;%PATH%"

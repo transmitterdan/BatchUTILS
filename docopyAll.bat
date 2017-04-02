@@ -83,6 +83,16 @@ xcopy /Y /Q /H /E /K /I ..\buildwin\crashrpt\*.txt %rdir1%
 xcopy /Y /Q /H /E /K /I ..\buildwin\crashrpt\Crash*.exe %rdir1%
 xcopy /Y /Q /H /E /K /I ..\buildwin\crashrpt\*.ini %rdir1%
 
+:copy_programdata
+del /f /q %rdir1%\opencpn.ini
+del /f /q %rdir1%\navobj.xml
+del /f /q %rdir1%\navobj.xml.1
+del /f /q %rdir1%\CHRTLIST.DAT
+copy /v %PROGRAMDATA%\OpenCPN\opencpn.ini %rdir1%\opencpn.ini
+copy /v %PROGRAMDATA%\OpenCPN\navobj.xml %rdir1%\navobj.xml
+copy /v %PROGRAMDATA%\OpenCPN\navobj.xml.1 %rdir1%\navobj.xml.1
+copy /v %PROGRAMDATA%\OpenCPN\CHRTLIST.DAT %rdir1%\CHRTLIST.DAT
+
 for /D %%f in (..\plugins\*) do call :handlePluginDir %1 %%f %pld1%
 
 exit /b 0
