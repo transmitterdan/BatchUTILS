@@ -12,8 +12,10 @@ rmdir /s %1
 if %ERRORLEVEL% GTR 0 goto usage
 git clone git://github.com/transmitterdan/wxWidgets.git
 git remote add upstream https://github.com/wxWidgets/wxWidgets.git
-git branch DanFix
-git push --set-upstream origin DanFix
+git checkout master
+git push --set-upstream origin master
+git checkout OpenCPN
+git push --set-upstream origin OpenCPN
 cd wxWidgets
 set WXDIR="%CD%"
 :build
@@ -30,32 +32,25 @@ set str1=%CD%
 cd .\build\msw
 git checkout master
 git pull upstream master
+git push
 git checkout %str2%
-git merge master
-if not "%str2%"=="DanFix" goto donotpush
+git pull upstream master
+if not "%str2%"=="OpenCPN" goto donotpush
 git push
 :donotpush
 REM This next line will evaluate TRUE if working directory name contains substring('2.8')
 if not x%str1:2.8=%==x%str1% goto buildV2
 nmake -f makefile.vc %clean% BUILD=release SHARED=1 CFLAGS=/D_USING_V120_SDK71_ CXXFLAGS=/D_USING_V120_SDK71_
 nmake -f makefile.vc %clean% BUILD=debug SHARED=1 CFLAGS=/D_USING_V120_SDK71_ CXXFLAGS=/D_USING_V120_SDK71_
-set blank=
-@echo %blank%=" "
-@echo *********************************************************************************************************
-@echo Don't forget to run config.bat in OpenCPN\build if you want to use the newly built versions of the DLLs *
-@echo *********************************************************************************************************
-@echo %blank%
-rem pushd \storage\transmitterdan\OpenCPN\build
-rem xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll .\release\wxWidgets
-rem xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll ..\buildwin\wxWidgets
-rem xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*ud_*.dll .\debug\wxWidgets
-rem popd
 goto end
 :buildV2
 @echo Building old wxWidgets-2
 nmake -f makefile.vc %clean% BUILD=release SHARED=1 CFLAGS=/D_USING_V120_SDK71_ CXXFLAGS="/D_USING_V120_SDK71_ /DNEED_PBT_H"
 nmake -f makefile.vc %clean% BUILD=debug SHARED=1 CFLAGS=/D_USING_V120_SDK71_ CXXFLAGS="/D_USING_V120_SDK71_ /DNEED_PBT_H"
 :end
+@echo *********************************************************************************************************
+@echo Don't forget to run config.bat in OpenCPN\build if you want to use the newly built versions of the DLLs *
+@echo *********************************************************************************************************
 @echo Returning to %str0%
 popd
 endlocal
