@@ -1,6 +1,10 @@
+@setlocal enableextensions enabledelayedexpansion
 @echo off
-@echo Copying %WXDIR%\lib\vc_dll
+@echo Cleaing ..\buildwin\wxWidgets 
 del ..\buildwin\wxWidgets\*.dll
+if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
+
+@echo Copying %WXDIR%\lib\vc_dll->..\buildwin\wxWidgets
 xcopy /Y /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll ..\buildwin\wxWidgets
 
 if not exist CMakeCache.txt goto config
