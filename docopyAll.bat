@@ -10,26 +10,27 @@ rem If the argument is "Release" (without ") then it will copy dependent files  
 rem into the build\Release folder under the build folder.                           *
 rem *********************************************************************************
 if "%1"=="" goto usage
-if not exist ..\build\%1 goto usage
+if not exist %OpenCPNDIR%\build\%1 goto usage
 if not "%1" == "Debug" if not "%1" == "debug" goto normal
 if not "%1" == "Release" if not "%1" == "release" goto debug
 :debug
 if not "%1" == "Debug" if not "%1" == "debug" goto usage
-set rdir1=..\build\%1
-set pld1=..\build\%1\plugins
+set rdir1=%OpenCPNDIR%\build\%1
+set pld1=%OpenCPNDIR%\build\%1\plugins
 goto go
 :normal
 if not "%1" == "Release" if not "%1" == "release" goto usage
-set rdir1=..\build\%1
-set pld1=..\build\%1\plugins
+set rdir1=%OpenCPNDIR%\build\%1
+set pld1=%OpenCPNDIR%\build\%1\plugins
 :go
+if "%2" == "PluginsOnly" goto copy_plugins
 
 @echo Copying DLLs
 del /f %rdir1%\*.dll
-copy /Y /V ..\buildwin\gtk\*.dll %rdir1%
-copy /Y /V ..\buildwin\expat-2.1.0\*.dll %rdir1%
-copy /Y /V ..\buildwin\*.dll %rdir1%
-copy /Y /V ..\buildwin\vc\*.dll %rdir1%
+copy /Y /V %OpenCPNDIR%\buildwin\gtk\*.dll %rdir1%
+copy /Y /V %OpenCPNDIR%\buildwin\expat-2.1.0\*.dll %rdir1%
+copy /Y /V %OpenCPNDIR%\buildwin\*.dll %rdir1%
+if exist %OpenCPNDIR%\buildwin\vc copy /Y /V %OpenCPNDIR%\buildwin\vc\*.dll %rdir1%
 if not "%1" == "release" if not "%1" == "Release" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*ud_*.dll %rdir1%
 if not "%1" == "debug" if not "%1" == "Debug" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
 @rem @echo Copying wxWidgets locale files
@@ -45,31 +46,39 @@ if not exist %rdir1%\share mkdir %rdir1%\share
 if not exist %rdir1%\sounds mkdir %rdir1%\sounds
 if not exist %rdir1%\tcdata mkdir %rdir1%\tcdata
 if not exist %rdir1%\uidata mkdir %rdir1%\uidata
+if not exist %rdir1%\uidata\traditional mkdir %rdir1%\uidata\traditional
+if not exist %rdir1%\uidata\journeyman mkdir %rdir1%\uidata\journeyman
+if not exist %rdir1%\uidata\journeyman_flat mkdir %rdir1%\uidata\journeyman_flat
+
 if not exist %rdir1%\wvsdata mkdir %rdir1%\wvsdata
 
 :copy_uidata
-copy /Y /V ..\src\bitmaps\styles.xml %rdir1%\uidata
-copy /Y /V ..\src\bitmaps\toolicons_traditional.png %rdir1%\uidata
-copy /Y /V ..\src\bitmaps\toolicons_journeyman.png %rdir1%\uidata
-copy /Y /V ..\src\bitmaps\toolicons_journeyman_flat.png %rdir1%\uidata
-copy /Y /V ..\src\bitmaps\iconAll.png %rdir1%\uidata
-copy /Y /V ..\src\bitmaps\iconMinimum.png %rdir1%\uidata
-copy /Y /V ..\src\bitmaps\iconRMinus.png %rdir1%\uidata
-copy /Y /V ..\src\bitmaps\iconRPlus.png %rdir1%\uidata
-copy /Y /V ..\src\bitmaps\iconStandard.png %rdir1%\uidata
-xcopy /Y /Q /H /E /K /I  ..\data\svg\journeyman %rdir1%\uidata
-xcopy /Y /Q /H /E /K /I  ..\data\svg\journeyman_flat %rdir1%\uidata
-xcopy /Y /Q /H /E /K /I  ..\data\svg\traditional %rdir1%\uidata
+@echo Copying icons and syles
+copy /Y /V %OpenCPNDIR%\src\bitmaps\styles.xml %rdir1%\uidata
+copy /Y /V %OpenCPNDIR%\src\bitmaps\toolicons_traditional.png %rdir1%\uidata
+copy /Y /V %OpenCPNDIR%\src\bitmaps\toolicons_journeyman.png %rdir1%\uidata
+copy /Y /V %OpenCPNDIR%\src\bitmaps\toolicons_journeyman_flat.png %rdir1%\uidata
+copy /Y /V %OpenCPNDIR%\src\bitmaps\iconAll.png %rdir1%\uidata
+copy /Y /V %OpenCPNDIR%\src\bitmaps\iconMinimum.png %rdir1%\uidata
+copy /Y /V %OpenCPNDIR%\src\bitmaps\iconRMinus.png %rdir1%\uidata
+copy /Y /V %OpenCPNDIR%\src\bitmaps\iconRPlus.png %rdir1%\uidata
+copy /Y /V %OpenCPNDIR%\src\bitmaps\iconStandard.png %rdir1%\uidata
+copy /Y /V %OpenCPNDIR%\src\bitmaps\iconUserStd.png %rdir1%\uidata
+@echo Copying toolbar icons
+xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\svg\journeyman %rdir1%\uidata\journeyman
+xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\svg\journeyman_flat %rdir1%\uidata\journeyman_flat
+xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\svg\traditional %rdir1%\uidata\traditional
 
-xcopy /Y /Q /H /E /K /I  ..\data\doc %rdir1%\doc
-xcopy /Y /Q /H /E /K /I  ..\data\gshhs %rdir1%\gshhs
-xcopy /Y /Q /H /E /K /I  ..\data\s57data %rdir1%\s57data
-xcopy /Y /Q /H /E /K /I  ..\data\sounds %rdir1%\sounds
-xcopy /Y /Q /H /E /K /I  ..\data\tcdata %rdir1%\tcdata
-xcopy /Y /Q /H /E /K /I  ..\data\wvsdata %rdir1%\wvsdata
+@echo Copying documentation and misc. data
+xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\doc %rdir1%\doc
+xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\gshhs %rdir1%\gshhs
+xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\s57data %rdir1%\s57data
+xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\sounds %rdir1%\sounds
+xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\tcdata %rdir1%\tcdata
+xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\wvsdata %rdir1%\wvsdata
 
 for /d %%a in (
-  "..\build\_CPack_Packages\win32\NSIS\opencpn_*_setup"
+  "%OpenCPNDIR%\build\_CPack_Packages\win32\NSIS\opencpn_*_setup"
 ) do set "ShareFolder=%%~fa\share"
 
 if "%ShareFolder%" == "" goto copy_crashrpt
@@ -78,10 +87,10 @@ xcopy /Y /Q /H /E /K /I %ShareFolder% %rdir1%\share
 
 :copy_crashrpt
 @echo "Copying Crash Reporter"
-xcopy /Y /Q /H /E /K /I ..\buildwin\crashrpt\*.dll %rdir1%
-xcopy /Y /Q /H /E /K /I ..\buildwin\crashrpt\*.txt %rdir1%
-xcopy /Y /Q /H /E /K /I ..\buildwin\crashrpt\Crash*.exe %rdir1%
-xcopy /Y /Q /H /E /K /I ..\buildwin\crashrpt\*.ini %rdir1%
+xcopy /Y /Q /H /E /K /I %OpenCPNDIR%\buildwin\crashrpt\*.dll %rdir1%
+xcopy /Y /Q /H /E /K /I %OpenCPNDIR%\buildwin\crashrpt\*.txt %rdir1%
+xcopy /Y /Q /H /E /K /I %OpenCPNDIR%\buildwin\crashrpt\Crash*.exe %rdir1%
+xcopy /Y /Q /H /E /K /I %OpenCPNDIR%\buildwin\crashrpt\*.ini %rdir1%
 
 :copy_programdata
 del /f /q %rdir1%\opencpn.ini
@@ -93,7 +102,8 @@ copy /v %PROGRAMDATA%\OpenCPN\navobj.xml %rdir1%\navobj.xml
 copy /v %PROGRAMDATA%\OpenCPN\navobj.xml.1 %rdir1%\navobj.xml.1
 copy /v %PROGRAMDATA%\OpenCPN\CHRTLIST.DAT %rdir1%\CHRTLIST.DAT
 
-for /D %%f in (..\plugins\*) do call :handlePluginDir %1 %%f %pld1%
+:copy_plugins
+for /D %%f in (%OpenCPNDIR%\plugins\*) do call :handlePluginDir %1 %%f %pld1%
 
 exit /b 0
 :usage
@@ -139,11 +149,11 @@ rem @echo arg1=%1
 rem @echo arg2=%2
 rem @echo arg3=%3
 if not exist %3 mkdir %3
-@echo "Copying ..\build\plugins\%1\%2\%1.dll--->%3"
-copy /Y /V ..\build\plugins\%1\%2\%1.dll %3
-if not exist ..\plugins\%1\data goto endCopyPlugin
+@echo "Copying %OpenCPNDIR%\build\plugins\%1\%2\%1.dll--->%3"
+copy /Y /V %OpenCPNDIR%\build\plugins\%1\%2\%1.dll %3
+if not exist %OpenCPNDIR%\plugins\%1\data goto endCopyPlugin
 if not exist "%3\%1\data" mkdir "%3\%1\data"
-@echo "Xcopying ..\plugins\%1\data-->%3\%1\data"
-xcopy /Y /Q /H /E /K /I ..\plugins\%1\data %3\%1\data
+@echo "Xcopying %OpenCPNDIR%\plugins\%1\data-->%3\%1\data"
+xcopy /Y /Q /H /E /K /I %OpenCPNDIR%\plugins\%1\data %3\%1\data
 :endCopyPlugin
 exit /b

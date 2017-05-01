@@ -1,33 +1,72 @@
+@echo off
+@echo "*******************************"
+@echo "*   Entering Osetup.bat...    *"
+@echo "*******************************"
+if exist e:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=E:\storage\transmitterdan\OpenCPN"
+if exist c:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=C:\storage\transmitterdan\OpenCPN"
+if not ""=="%OpenCPNDIR%" goto :foundit
+@echo Cannot find OpenCPN development folder.
+exit /b 1
+
+:foundit
+@echo Found OpenCPN development folder at %OpenCPNDIR%
 @rem wxWidgets
 @rem -------------------
-@if exist "C:\wxWidgets-2.8.12" set WXDIR=C:\wxWidgets-2.8.12
+@if exist "C:\wxWidgets-2.8.12" set "WXDIR=C:\wxWidgets-2.8.12"
 @if exist "C:\wxWidgets-3.0.2" set "WXDIR=C:\wxWidgets-3.0.2"
 @if exist "C:\wxWidgets-3.1.0" set "WXDIR=C:\wxWidgets-3.1.0"
-@if exist "C:\storage\transmitterdan\wxWidgets-3.0.2\" set WXDIR=C:\storage\transmitterdan\wxWidgets-3.0.2
-@if exist "E:\storage\transmitterdan\wxwidgets\" set WXDIR=E:\storage\transmitterdan\wxwidgets
-@set "WXWIN=%WXDIR%"
-@set "PATH=%WXDIR%;%WXDIR%\lib\vc_dll;E:\storage\transmitterdan\BatchUTILS;%PATH%"
+@if exist "C:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=C:\storage\transmitterdan\wxWidgets-3.0.2"
+@if exist "C:\storage\transmitterdan\wxWidgets" set "WXDIR=C:\storage\transmitterdan\wxWidgets"
+@if exist "E:\storage\transmitterdan\wxWidgets" set "WXDIR=E:\storage\transmitterdan\wxWidgets"
+@if exist "E:\storage\rework\wxWidgets" set "WXDIR=E:\storage\rework\wxWidgets"
+@echo Found most recent version of wxWidgets at %WXDIR%
+rem @set "WXWIN=%WXDIR%"
+rem @ECHO "wxWidgets folder is %WXDIR%"
+
+call :add_to_path "%WXDIR%"
+call :add_to_path "%WXDIR%\lib\vc_dll"
+
 @rem POedit
 @rem -------------------
-@if exist "%ProgramFiles%\Poedit" set "PATH=%ProgramFiles%\Poedit\GettextTools\bin;%PATH%"
-@if exist "%ProgramFiles(x86)%\Poedit" set "PATH=%ProgramFiles(x86)%\Poedit\GettextTools\bin;%PATH%"
+call :add_to_path "%ProgramFiles%\Poedit\GettextTools\bin"
+call :add_to_path "%ProgramFiles(x86)%\Poedit\GettextTools\bin"
 @rem CMake
 @rem -------------------
-@if exist "%ProgramFiles%\CMake\bin" set "PATH=%ProgramFiles%\CMake\bin;%PATH%"
-@if exist "%ProgramFiles(x86)%\CMake\bin" set "PATH=%ProgramFiles(x86)%\CMake\bin;%PATH%"
+call :add_to_path "%ProgramFiles%\CMake\bin"
+call :add_to_path "%ProgramFiles(x86)%\CMake\bin"
 @rem 7-Zip
 @rem -------------------
-@if exist "%ProgramFiles%\7-Zip" set "PATH=%ProgramFiles%\7-Zip;%PATH%"
-@if exist "%ProgramFiles%(x86)\7-Zip" set "PATH=%ProgramFiles(x86)%\7-Zip;%PATH%"
+call :add_to_path "%ProgramFiles%\7-Zip"
+call :add_to_path "%ProgramFiles(x86)%\7-Zip"
 @rem Notepad++
 @rem -------------------
-@if exist "%ProgramFiles(x86)%\Notepad++" set "PATH=%ProgramFiles(x86)%\Notepad++;%PATH%"
-@if exist "%ProgramFiles%\Notepad++" set "PATH=%ProgramFiles%\Notepad++;%PATH%"
+call :add_to_path "%ProgramFiles(x86)%\Notepad++"
+call :add_to_path "%ProgramFiles%\Notepad++"
 @rem Git
 @rem -------------------
-@if exist "%ProgramFiles(x86)%\Git" set "PATH=%ProgramFiles(x86)%\Git\bin;%PATH%"
-@if exist "%ProgramFiles%\Git\bin" set "PATH=%ProgramFiles%\Git\bin;%PATH%"
+call :add_to_path "%ProgramFiles(x86)%\Git\bin"
+call :add_to_path "%ProgramFiles%\Git\bin"
 @rem Bakefile
 @rem -------------------
-@if exist "C:\storage\transmitterdan\bakefile-1.2.5.1_beta-win" set "PATH=C:\storage\transmitterdan\bakefile-1.2.5.1_beta-win;%PATH%"
+call :add_to_path "C:\storage\transmitterdan\bakefile-1.2.5.1_beta-win"
+call :add_to_path "E:\storage\transmitterdan\bakefile-1.2.5.1_beta-win"
+
+call :add_to_path "C:\storage\transmitterdan\BatchUTILS"
+call :add_to_path "E:\storage\transmitterdan\BatchUTILS"
+
 @exit /B 0
+
+
+
+@REM ------------------------------------------------------------------------
+:add_to_path
+if exist "%~1" (
+@   echo Adding %1 to path
+    set "PATH=%~1;%PATH%"
+    goto return
+) else (
+    if "%VSCMD_DEBUG%" GEQ "2" @echo [DEBUG:%~nx0] Could not add directory to PATH: "%~1"
+    if "%VSCMD_DEBUG%" GEQ "2" goto return
+)
+:return
+exit /B 0
