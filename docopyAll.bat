@@ -25,17 +25,19 @@ set pld1=%OpenCPNDIR%\build\%1\plugins
 :go
 if "%2" == "PluginsOnly" goto copy_plugins
 
-@echo Copying DLLs
+@echo Copying DLLs...
 del /f %rdir1%\*.dll
 copy /Y /V %OpenCPNDIR%\buildwin\gtk\*.dll %rdir1%
 copy /Y /V %OpenCPNDIR%\buildwin\expat-2.1.0\*.dll %rdir1%
 copy /Y /V %OpenCPNDIR%\buildwin\*.dll %rdir1%
 if exist %OpenCPNDIR%\buildwin\vc copy /Y /V %OpenCPNDIR%\buildwin\vc\*.dll %rdir1%
+@echo Copying wxWidgets DLL files...
 if not "%1" == "release" if not "%1" == "Release" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*ud_*.dll %rdir1%
 if not "%1" == "debug" if not "%1" == "Debug" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
 @rem @echo Copying wxWidgets locale files
 @rem if not exist %rdir1%\locale mkdir %rdir1%\locale
 @rem xcopy /Y /V /H /E /K /I %WXDIR%\locale %rdir1%\locale
+
 
 @echo "Copying data files"
 if not exist %rdir1%\doc mkdir %rdir1%\doc

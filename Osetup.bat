@@ -14,10 +14,13 @@ exit /b 1
 @rem -------------------
 @if exist "C:\wxWidgets-2.8.12" set "WXDIR=C:\wxWidgets-2.8.12"
 @if exist "C:\wxWidgets-3.0.2" set "WXDIR=C:\wxWidgets-3.0.2"
-@if exist "C:\wxWidgets-3.1.0" set "WXDIR=C:\wxWidgets-3.1.0"
 @if exist "C:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=C:\storage\transmitterdan\wxWidgets-3.0.2"
-@if exist "C:\storage\transmitterdan\wxWidgets" set "WXDIR=C:\storage\transmitterdan\wxWidgets"
-@if exist "E:\storage\transmitterdan\wxWidgets" set "WXDIR=E:\storage\transmitterdan\wxWidgets"
+@if exist "E:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=E:\storage\transmitterdan\wxWidgets-3.0.2"
+rem @if exist "C:\wxWidgets-3.1.0" set "WXDIR=C:\wxWidgets-3.1.0"
+rem @if exist "C:\storage\transmitterdan\wxWidgets-3.1.0" set "WXDIR=C:\storage\transmitterdan\wxWidgets-3.1.0"
+rem @if exist "E:\storage\transmitterdan\wxWidgets-3.1.0" set "WXDIR=E:\storage\transmitterdan\wxWidgets-3.1.0"
+rem @if exist "C:\storage\transmitterdan\wxWidgets" set "WXDIR=C:\storage\transmitterdan\wxWidgets"
+rem @if exist "E:\storage\transmitterdan\wxWidgets" set "WXDIR=E:\storage\transmitterdan\wxWidgets"
 @if exist "E:\storage\rework\wxWidgets" set "WXDIR=E:\storage\rework\wxWidgets"
 @echo Found most recent version of wxWidgets at %WXDIR%
 rem @set "WXWIN=%WXDIR%"
