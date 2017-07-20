@@ -70,7 +70,6 @@ copy /Y /V %OpenCPNDIR%\src\bitmaps\iconUserStd.png %rdir1%\uidata
 xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\svg\journeyman %rdir1%\uidata\journeyman
 xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\svg\journeyman_flat %rdir1%\uidata\journeyman_flat
 xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\svg\traditional %rdir1%\uidata\traditional
-
 @echo Copying documentation and misc. data
 xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\doc %rdir1%\doc
 xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\gshhs %rdir1%\gshhs
@@ -78,6 +77,7 @@ xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\s57data %rdir1%\s57data
 xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\sounds %rdir1%\sounds
 xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\tcdata %rdir1%\tcdata
 xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\wvsdata %rdir1%\wvsdata
+xcopy /Y /Q /H /E /K /I  %OpenCPNDIR%\data\license.txt %rdir1%
 
 for /d %%a in (
   "%OpenCPNDIR%\build\_CPack_Packages\win32\NSIS\opencpn_*_setup"
