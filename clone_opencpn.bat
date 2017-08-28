@@ -16,12 +16,12 @@ git remote add upstream https://github.com/OpenCPN/OpenCPN.git
 git checkout master
 mkdir build
 powershell -Command "(New-Object Net.WebClient).DownloadFile('http://sourceforge.net/projects/opencpnplugins/files/opencpn_packaging_data/OpenCPN_buildwin.7z/download', 'OpenCPN_buildwin.7z')"
-if exist OpenCPN_buildwin.7z goto unzip
-powershell -Command "(New-Object Net.WebClient).DownloadFile('http://sourceforge.net/projects/opencpnplugins/files/opencpn_packaging_data/OpenCPN_buildwin.7z/download', 'OpenCPN_buildwin.7z')"
+if not exist OpenCPN_buildwin.7z powershell -Command "(New-Object Net.WebClient).DownloadFile('http://sourceforge.net/projects/opencpnplugins/files/opencpn_packaging_data/OpenCPN_buildwin.7z/download', 'OpenCPN_buildwin.7z')"
+powershell -Command "(New-Object Net.WebClient).DownloadFile('http://sourceforge.net/projects/opencpnplugins/files/opencpn_packaging_data/OpenCPN_buildwin-svg.7z/download', 'OpenCPN_buildwin-svg.7z')"
+if not exit OpenCPN_buildwin-svg.7z powershell -Command "(New-Object Net.WebClient).DownloadFile('http://sourceforge.net/projects/opencpnplugins/files/opencpn_packaging_data/OpenCPN_buildwin-svg.7z/download', 'OpenCPN_buildwin-svg.7z')"
 if not exist OpenCPN_buildwin.7z goto quit
-:unzip
-7z x OpenCPN_buildwin.7z
-del OpenCPN_buildwin.7z
+if not exist OpenCPN_buildwin-svg.7z goto quit
+call unzip
 if %ERRORLEVEL% GTR 0 goto Done
 cd build
 rem copy \storage\*.bat
@@ -37,3 +37,13 @@ exit /b 1
 @echo Usage: clone_opencpn.bat repository_name
 @echo        repository_name = github account name to clone from
 exit /b 1
+
+:unzip
+7z x OpenCPN_buildwin.7z
+if %ERRORLEVEL% GTR 0 exit /b 1
+del OpenCPN_buildwin.7z
+7z x OpenCPN_buildwin-svg.7z
+if %ERRORLEVEL% GTR 0 exit /b 1
+del OpenCPN_buildwin-svg.7z
+exit /b 0
+

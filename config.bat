@@ -30,6 +30,20 @@ rem if  not exist %OpenCPNDIR%\build\Release\NUL mkdir %OpenCPNDIR%\build\Releas
 copy /V "%WXDIR%\lib\vc_dll\*u_*.dll" %OpenCPNDIR%\build\Release
 copy /V "%WXDIR%\lib\vc_dll\*ud_*.dll" %OpenCPNDIR%\build\Debug
 
+@echo Updating all plugins to latest
+pushd ..\plugins
+ren aisradar_pi radar_pi
+cd radar_pi
+git pull upstream master
+git push
+cd ..
+ren radar_pi aisradar_pi
+popd
+pushd ..\plugins\ocpn_draw_pi
+git pull upstream master
+git push
+popd
+
 echo configuring generator %__gen__% and toolset %__ts__%
 pushd %OpenCPNDIR%\build
 cmake -Wno-dev -G "%__gen__%" -T "%__ts__%" ..
