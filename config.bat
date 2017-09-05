@@ -32,7 +32,7 @@ copy /V "%WXDIR%\lib\vc_dll\*ud_*.dll" %OpenCPNDIR%\build\Debug
 
 echo configuring generator %__gen__% and toolset %__ts__%
 pushd %OpenCPNDIR%\build
-cmake -Wno-dev -G "%__gen__%" -T "%__ts__%" ..
+cmake -Wno-dev -G "%__gen__%" -T "%__ts__%" -D CMAKE_CXX_FLAGS=/MP -D CMAKE_C_FLAGS=/MP ..
 
 set __ts__=
 set __gen__=
