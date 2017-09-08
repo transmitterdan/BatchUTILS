@@ -24,7 +24,6 @@ if not exist OpenCPN_buildwin-svg.7z goto quit
 call unzip
 if %ERRORLEVEL% GTR 0 goto Done
 cd build
-rem copy \storage\*.bat
 call config.bat
 rem call dbbuild.bat
 rem call build.bat
@@ -36,6 +35,13 @@ exit /b 1
 :usage
 @echo Usage: clone_opencpn.bat repository_name
 @echo        repository_name = github account name to clone from
+@echo Note: This script does not work if you are cloning from the
+@echo       master opencpn repository (github.com/OpenCPN/OpenCPN.git).
+@echo       If you are trying to clone that repository think about why
+@echo       you would ever want to do that. There are not practical
+@echo       reasons to do so. You should probably fork the OpenCPN
+@echo       master and then clone from your own fork. That's what this
+@echo       script assumes you have done.
 exit /b 1
 
 :unzip
