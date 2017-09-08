@@ -2,6 +2,9 @@
 @echo "*******************************"
 @echo "*   Entering Osetup.bat...    *"
 @echo "*******************************"
+rem Edit these lines to match the place(s) you keep your opencpn cloned repository
+rem These are my locations but yours will be different so edit these lines. You don't need
+rem two lines. One is enough.
 if exist e:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=E:\storage\transmitterdan\OpenCPN"
 if exist c:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=C:\storage\transmitterdan\OpenCPN"
 if not ""=="%OpenCPNDIR%" goto :foundit
@@ -12,6 +15,10 @@ exit /b 1
 @echo Found OpenCPN development folder at %OpenCPNDIR%
 @rem wxWidgets
 @rem -------------------
+rem Edit these lines to tell the build tools where you have put the wxWidgets installation.
+rem You only need one line here. I have several versions of wxWidgets so I have many lines.
+rem But you only need one. I strongly recommend using the 3.0.2 version. It is compatible with
+rem most plugins.
 @if exist "C:\wxWidgets-2.8.12" set "WXDIR=C:\wxWidgets-2.8.12"
 @if exist "C:\wxWidgets-3.0.2" set "WXDIR=C:\wxWidgets-3.0.2"
 rem @if exist "C:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=C:\storage\transmitterdan\wxWidgets-3.0.2"
@@ -29,6 +36,13 @@ rem @ECHO "wxWidgets folder is %WXDIR%"
 call :add_to_path "%WXDIR%"
 call :add_to_path "%WXDIR%\lib\vc_dll"
 
+rem Here we add all the tools that we need to build OpenCPN.
+rem You should put the paths here to match your system.
+rem Same as above, you don't need 2 lines for each program. One is enough.
+rem But these lines represent probably 99% of the typical installations.
+rem You may not have to edit these lines at all. For any tools that you
+rem don't have it will just skip over them so you don't have to delete
+rem any lines unless you need to.
 @rem POedit
 @rem -------------------
 call :add_to_path "%ProgramFiles%\Poedit\GettextTools\bin"
@@ -54,13 +68,15 @@ call :add_to_path "%ProgramFiles%\Git\bin"
 call :add_to_path "C:\storage\transmitterdan\bakefile-1.2.5.1_beta-win"
 call :add_to_path "E:\storage\transmitterdan\bakefile-1.2.5.1_beta-win"
 
+rem Edit this line to the location where you keep BatchUTILS.
+rem As before, you only need one line that matches your system.
 call :add_to_path "C:\storage\transmitterdan\BatchUTILS"
 call :add_to_path "E:\storage\transmitterdan\BatchUTILS"
 
 @exit /B 0
 
 
-
+rem Don't change this stuff.
 @REM ------------------------------------------------------------------------
 :add_to_path
 if exist "%~1" (
