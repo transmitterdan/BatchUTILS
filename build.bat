@@ -16,7 +16,7 @@ timeout /t 5
 for %%I in (opencpn*.exe) do %%~nI
 :moveit
 if not "%1"=="package" goto finish
-move opencpn*.exe "%USERPROFILE%\Google Drive\"
+if exist "%USERPROFILE%\Google Drive\NUL" move opencpn*.exe "%USERPROFILE%\Google Drive\"
 :finish
 date /t
 time /t
