@@ -15,17 +15,20 @@ popd
 @echo Setting up %SRCFOLDER% for %1 execution.
 if "%1"=="" goto usage
 if not exist %SRCFOLDER%\build\%1 goto usage
-if not "%1" == "Debug" if not "%1" == "debug" goto normal
-if not "%1" == "Release" if not "%1" == "release" goto debug
+set "str=%1"
+call :toupper
+set "mode=%upper%"
+if not "%mode%" == "DEBUG" goto normal
+if not "%mode%" == "RELEASE" goto debug
 :debug
-if not "%1" == "Debug" if not "%1" == "debug" goto usage
-set rdir1=%SRCFOLDER%\build\%1
-set pld1=%SRCFOLDER%\build\%1\plugins
+if not "%mode%" == "DEBUG" goto usage
+set rdir1=%SRCFOLDER%\build\%mode%
+set pld1=%SRCFOLDER%\build\%mode%\plugins
 goto go
 :normal
-if not "%1" == "Release" if not "%1" == "release" goto usage
-set rdir1=%SRCFOLDER%\build\%1
-set pld1=%SRCFOLDER%\build\%1\plugins
+if not "%mode%" == "RELEASE" goto usage
+set rdir1=%SRCFOLDER%\build\%mode%
+set pld1=%SRCFOLDER%\build\%mode%\plugins
 :go
 if "%2" == "PluginsOnly" goto copy_plugins
 
@@ -36,8 +39,8 @@ copy /Y /V %SRCFOLDER%\buildwin\expat-2.1.0\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\buildwin\*.dll %rdir1%
 if exist %SRCFOLDER%\buildwin\vc copy /Y /V %SRCFOLDER%\buildwin\vc\*.dll %rdir1%
 @echo Copying wxWidgets DLL files...
-if not "%1" == "release" if not "%1" == "Release" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*ud_*.dll %rdir1%
-if not "%1" == "debug" if not "%1" == "Debug" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
+if not "%mode%" == "RELEASE" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*ud_*.dll %rdir1%
+if not "%mode%" == "DEBUG" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
 @rem @echo Copying wxWidgets locale files
 @rem if not exist %rdir1%\locale mkdir %rdir1%\locale
 @rem xcopy /Y /V /H /E /K /I %WXDIR%\locale %rdir1%\locale
@@ -163,4 +166,9 @@ if not exist "%3\%1\data" mkdir "%3\%1\data"
 @echo "Xcopying %SRCFOLDER%\plugins\%1\data-->%3\%1\data"
 xcopy /Y /Q /H /E /K /I %SRCFOLDER%\plugins\%1\data %3\%1\data
 :endCopyPlugin
+exit /b 0
+
+:toupper
+@rem convert str to uppercase and put it in variable upper
+for /f "usebackq delims=" %%I in (`powershell "\"%str%\".toUpper()"`) do set "upper=%%~I"
 exit /b 0

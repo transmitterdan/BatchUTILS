@@ -21,6 +21,7 @@ rem But you only need one. I strongly recommend using the 3.0.2 version. It is c
 rem most plugins.
 @if exist "C:\wxWidgets-2.8.12" set "WXDIR=C:\wxWidgets-2.8.12"
 @if exist "C:\wxWidgets-3.0.2" set "WXDIR=C:\wxWidgets-3.0.2"
+@if exist "C:\wxWidgets-3.0.3" set "WXDIR=C:\wxWidgets-3.0.3"
 rem @if exist "C:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=C:\storage\transmitterdan\wxWidgets-3.0.2"
 rem @if exist "E:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=E:\storage\transmitterdan\wxWidgets-3.0.2"
 rem @if exist "C:\wxWidgets-3.1.0" set "WXDIR=C:\wxWidgets-3.1.0"
