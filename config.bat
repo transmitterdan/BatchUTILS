@@ -20,8 +20,8 @@ if "%VSINSTALLDIR%" == "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Communi
 
 if __gen__=="" goto noVC
 
-if not exist CMakeCache.txt goto config
-del \CMakeCache.txt
+if not exist .\CMakeCache.txt goto config
+del .\CMakeCache.txt
 :config
 
 if  not exist .\Debug\NUL mkdir .\Debug
