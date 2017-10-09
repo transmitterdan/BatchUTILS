@@ -18,18 +18,16 @@ if not exist %SRCFOLDER%\build\%1 goto usage
 set "str=%1"
 call :toupper
 set "mode=%upper%"
-if not "%mode%" == "DEBUG" goto normal
-if not "%mode%" == "RELEASE" goto debug
-:debug
-if not "%mode%" == "DEBUG" goto usage
+if "%mode%"=="RELEASE" goto setup
+if "%mode%"=="RELWITHDEBINFO" goto setup
+if "%mode%"=="MINSIZEREL" goto setup
+if "%mode%"=="DEBUG" goto setup
+goto usage
+
+:setup
+echo "Setting up source and destination folders"
 set rdir1=%SRCFOLDER%\build\%mode%
 set pld1=%SRCFOLDER%\build\%mode%\plugins
-goto go
-:normal
-if not "%mode%" == "RELEASE" goto usage
-set rdir1=%SRCFOLDER%\build\%mode%
-set pld1=%SRCFOLDER%\build\%mode%\plugins
-:go
 if "%2" == "PluginsOnly" goto copy_plugins
 
 @echo Copying DLLs...
@@ -39,16 +37,22 @@ copy /Y /V %SRCFOLDER%\buildwin\expat-2.1.0\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\buildwin\*.dll %rdir1%
 if exist %SRCFOLDER%\buildwin\vc copy /Y /V %SRCFOLDER%\buildwin\vc\*.dll %rdir1%
 @echo Copying wxWidgets DLL files...
-if not "%mode%" == "RELEASE" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*ud_*.dll %rdir1%
-if not "%mode%" == "DEBUG" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
+if "%mode%" == "DEBUG" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*ud_*.dll %rdir1%
+if "%mode%" == "RELEASE" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
+if "%mode%" == "RELWITHDEBINFO" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
+if "%mode%" == "MINSIZEREL" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
+
 @rem @echo Copying wxWidgets locale files
 @rem if not exist %rdir1%\locale mkdir %rdir1%\locale
 @rem xcopy /Y /V /H /E /K /I %WXDIR%\locale %rdir1%\locale
 
 
 @echo "Copying data files"
+if not exist %rdir1%\doc echo "running mkdir %rdir1%\doc"
 if not exist %rdir1%\doc mkdir %rdir1%\doc
+if not exist %rdir1%\gshhs echo "running mkdir %rdir1%\gshhs"
 if not exist %rdir1%\gshhs mkdir %rdir1%\gshhs
+if not exist %rdir1%\plugins echo "running mkdir %rdir1%\plugins"
 if not exist %rdir1%\plugins mkdir %rdir1%\plugins
 if not exist %rdir1%\s57data mkdir %rdir1%\s57data
 if not exist %rdir1%\share mkdir %rdir1%\share
@@ -128,9 +132,6 @@ endlocal
 @echo * mode.                                                                           *
 @echo * If the argument is "Release" (without ") then it will copy dependent files      *
 @echo * into the build\Release folder under the build folder.                           *
-@echo *                                                                                 *
-@echo * NOTE: You must call cleanPlugins.bat before building OpenCPN!!!                 *
-@echo *       Then you can call docopy.bat release | debug                              *
 @echo *                                                                                 *
 @echo * NOTE: This moves files into the folder under build. Therefore, you must start   *
 @echo *       OpenCPN.exe with the -p option. That way it will use the proper folder for*
