@@ -9,11 +9,10 @@ if exist e:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=E:\storage\transmitte
 if exist c:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=C:\storage\transmitterdan\OpenCPN"
 if not ""=="%OpenCPNDIR%" goto :foundit
 @echo Cannot find OpenCPN development folder.
-goto :notfoundit
+exit /b 1
 
 :foundit
 @echo Found OpenCPN development folder at %OpenCPNDIR%
-:notfoundit
 @rem wxWidgets
 @rem -------------------
 rem Edit these lines to tell the build tools where you have put the wxWidgets installation.
@@ -28,17 +27,15 @@ rem @if exist "E:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=E:\storage\
 rem @if exist "C:\wxWidgets-3.1.0" set "WXDIR=C:\wxWidgets-3.1.0"
 rem @if exist "C:\storage\transmitterdan\wxWidgets-3.1.0" set "WXDIR=C:\storage\transmitterdan\wxWidgets-3.1.0"
 rem @if exist "E:\storage\transmitterdan\wxWidgets-3.1.0" set "WXDIR=E:\storage\transmitterdan\wxWidgets-3.1.0"
-@if exist "C:\storage\transmitterdan\wxWidgets" set "WXDIR=C:\storage\transmitterdan\wxWidgets"
+rem @if exist "C:\storage\transmitterdan\wxWidgets" set "WXDIR=C:\storage\transmitterdan\wxWidgets"
 @if exist "E:\storage\transmitterdan\wxWidgets" set "WXDIR=E:\storage\transmitterdan\wxWidgets"
 rem @if exist "E:\storage\rework\wxWidgets" set "WXDIR=E:\storage\rework\wxWidgets"
-@if "%WXDIR%"=="" goto :noWX
 @echo Found most recent version of wxWidgets at %WXDIR%
 rem @set "WXWIN=%WXDIR%"
 rem @ECHO "wxWidgets folder is %WXDIR%"
 
 call :add_to_path "%WXDIR%"
 call :add_to_path "%WXDIR%\lib\vc_dll"
-:noWX
 
 rem Here we add all the tools that we need to build OpenCPN.
 rem You should put the paths here to match your system.
