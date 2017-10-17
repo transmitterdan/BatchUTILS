@@ -1,4 +1,7 @@
 @echo off
+rem Argument 1 should be Github username
+rem Argument 2 is optional folder name and by default is same as username
+rem Recommend you stay with the default unless you are an expert
 if "%1"=="" goto usage
 if not "%2"=="" set "folder=%2"
 if "%2"=="" set "folder=%1"
