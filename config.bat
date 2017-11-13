@@ -25,7 +25,7 @@ del .\CMakeCache.txt
 :config
 
 if  not exist .\Debug\NUL mkdir .\Debug
-if  not exist .\build\Release\NUL mkdir .\Release
+if  not exist .\Release\NUL mkdir .\Release
 
 @echo Updating all plugins to latest
 pushd ..\plugins
