@@ -159,6 +159,7 @@ rem @echo arg0=%0
 rem @echo arg1=%1
 rem @echo arg2=%2
 rem @echo arg3=%3
+if not exist %SRCFOLDER%\build\plugins\%1\%2\%1.dll goto endCopyPlugin
 if not exist %3 mkdir %3
 @echo "Copying %SRCFOLDER%\build\plugins\%1\%2\%1.dll--->%3"
 copy /Y /V %SRCFOLDER%\build\plugins\%1\%2\%1.dll %3
