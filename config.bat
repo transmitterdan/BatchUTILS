@@ -37,6 +37,7 @@ git push
 cd ..
 ren radar_pi aisradar_pi
 
+:vfkaps
 if not exist vfkaps_pi\NUL goto ocpn_draw
 pushd vfkaps_pi
 git pull upstream master
@@ -53,7 +54,7 @@ popd
 :configure
 popd
 echo configuring generator %__gen__% and toolset %__ts__%
-cmake -Wno-dev -G "%__gen__%" -T "%__ts__%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
+cmake -Wno-dev -G "%__gen__%" -T "%__ts__%" -D CMAKE_CXX_FLAGS="/D_USING_V120_SDK71_ /MP" -D CMAKE_C_FLAGS="/MP /D_USING_V120_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
 set __ts__=
 set __gen__=
 exit /b 0
