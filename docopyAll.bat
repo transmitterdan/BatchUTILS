@@ -31,16 +31,17 @@ set pld1=%SRCFOLDER%\build\%mode%\plugins
 if "%2" == "PluginsOnly" goto copy_plugins
 
 @echo Copying DLLs...
-del /f %rdir1%\*.dll
+rem del /f %rdir1%\*.dll
 copy /Y /V %SRCFOLDER%\buildwin\gtk\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\buildwin\expat-2.1.0\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\buildwin\*.dll %rdir1%
+copy /Y /V %SRCFOLDER%\buildwin\*.crt %rdir1%
 if exist %SRCFOLDER%\buildwin\vc copy /Y /V %SRCFOLDER%\buildwin\vc\*.dll %rdir1%
-@echo Copying wxWidgets DLL files...
-if "%mode%" == "DEBUG" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*ud_*.dll %rdir1%
-if "%mode%" == "RELEASE" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
-if "%mode%" == "RELWITHDEBINFO" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
-if "%mode%" == "MINSIZEREL" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc_dll\*u_*.dll %rdir1%
+rem @echo Copying wxWidgets DLL files...
+rem if "%mode%" == "DEBUG" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*ud_*.dll %rdir1%
+rem if "%mode%" == "RELEASE" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u_*.dll %rdir1%
+rem if "%mode%" == "RELWITHDEBINFO" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u_*.dll %rdir1%
+rem if "%mode%" == "MINSIZEREL" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u_*.dll %rdir1%
 
 @rem @echo Copying wxWidgets locale files
 @rem if not exist %rdir1%\locale mkdir %rdir1%\locale
@@ -62,6 +63,7 @@ if not exist %rdir1%\uidata mkdir %rdir1%\uidata
 if not exist %rdir1%\uidata\traditional mkdir %rdir1%\uidata\traditional
 if not exist %rdir1%\uidata\journeyman mkdir %rdir1%\uidata\journeyman
 if not exist %rdir1%\uidata\journeyman_flat mkdir %rdir1%\uidata\journeyman_flat
+if not exist %rdir1%\uidata\MUI_flat mkdir %rdir1%\uidata\MUI_flat
 
 if not exist %rdir1%\wvsdata mkdir %rdir1%\wvsdata
 
@@ -81,6 +83,7 @@ copy /Y /V %SRCFOLDER%\src\bitmaps\iconUserStd.png %rdir1%\uidata
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\journeyman %rdir1%\uidata\journeyman
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\journeyman_flat %rdir1%\uidata\journeyman_flat
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\traditional %rdir1%\uidata\traditional
+xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\MUI_flat %rdir1%\uidata\MUI_flat
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\markicons %rdir1%\uidata\markicons
 @echo Copying documentation and misc. data
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\doc %rdir1%\doc

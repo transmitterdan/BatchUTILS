@@ -1,11 +1,14 @@
 @setlocal enableextensions enabledelayedexpansion
 @echo off
-@echo Trying to configure...
+@echo Trying to configure OpenCPN
 rem ******************************************
 rem * This script will configure using Cmake *
 rem * to build OpenCPN. Run this in the      *
 rem * OpenCPN\build folder.                  *
 rem ******************************************
+
+if  not exist .\Debug\NUL mkdir .\Debug
+if  not exist .\Release\NUL mkdir .\Release
 
 call copyWX.bat
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
@@ -23,9 +26,6 @@ if "__gen__"=="" goto noVC
 if not exist .\CMakeCache.txt goto config
 del .\CMakeCache.txt
 :config
-
-if  not exist .\Debug\NUL mkdir .\Debug
-if  not exist .\Release\NUL mkdir .\Release
 
 @echo Updating all plugins to latest
 pushd ..\plugins
@@ -54,7 +54,8 @@ popd
 :configure
 popd
 echo configuring generator %__gen__% and toolset %__ts__%
-cmake -Wno-dev -G "%__gen__%" -T "%__ts__%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
+rem cmake -Wno-dev --warn-uninitialized -G "%__gen__%" -T "%__ts__%" -DOCPN_USE_VCPKG=ON -D CMAKE_TOOLCHAIN_FILE="e:\storage\transmitterdan\vcpkg\scripts\buildsystems\vcpkg.cmake" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
+cmake -Wno-dev -G "%__gen__%" -T "%__ts__%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
 set __ts__=
 set __gen__=
 exit /b 0

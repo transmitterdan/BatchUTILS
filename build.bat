@@ -1,12 +1,13 @@
 @setlocal enableextensions enabledelayedexpansion
 @echo off
 if "%1"=="" goto notarget
+rem cmake --build --trace-expand . "-DCMAKE_TOOLCHAIN_FILE=e:/storage/transmitterdan/vcpkg/scripts/buildsystems/vcpkg.cmake" --config Release --target %1
 cmake --build . --config Release --target %1
-if %ERRORLEVEL% GTR 0 goto quit
+if %ERRORLEVEL% NEQ 0 goto quit
 goto install
 :notarget
 cmake --build . --config Release
-if %ERRORLEVEL% GTR 0 goto quit
+if %ERRORLEVEL% NEQ 0 goto quit
 call docopyAll Release
 goto finish
 :install

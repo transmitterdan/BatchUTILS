@@ -1,6 +1,6 @@
 @setlocal enableextensions enabledelayedexpansion
 @echo off
-@echo Trying to configure...
+@echo Copying WX DLLs...
 rem ******************************************
 rem * This script will configure using Cmake *
 rem * to build OpenCPN. Run this in the      *
@@ -14,11 +14,11 @@ exit /b 1
 
 @echo Cleaning ..\buildwin\wxWidgets 
 if exist ..\buildwin\wxWidgets\NUL rmdir /S /Q ..\buildwin\wxWidgets
-@echo Copying wxWidgets libraries from %WXDIR%\lib\vc_dll
+@echo Copying wxWidgets libraries from %WXDIR%\lib\vc141_xp_dll
 mkdir ..\buildwin\wxWidgets
-copy /V "%WXDIR%\lib\vc_dll\*u_*.dll" ..\buildwin\wxWidgets
-del /Q .\Release\*u_*.dll
-del /Q .\Debug\*ud_*.dll
-copy /V "%WXDIR%\lib\vc_dll\*u_*.dll" .\Release
-copy /V "%WXDIR%\lib\vc_dll\*ud_*.dll" .\Debug
+copy /V "%WXDIR%\lib\vc141_xp_dll\wx*u_*.dll" ..\buildwin\wxWidgets
+del /Q .\Release\wx*u_*.dll
+del /Q .\Debug\wx*ud_*.dll
+copy /V "%WXDIR%\lib\vc141_xp_dll\wx*u_*.dll" .\Release
+copy /V "%WXDIR%\lib\vc141_xp_dll\wx*ud_*.dll" .\Debug
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
