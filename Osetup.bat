@@ -26,11 +26,12 @@ rem most plugins.
 @if exist "E:\wxWidgets-3.0.3" set "WXDIR=E:\wxWidgets-3.0.3"
 rem @if exist "C:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=C:\storage\transmitterdan\wxWidgets-3.0.2"
 rem @if exist "E:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=E:\storage\transmitterdan\wxWidgets-3.0.2"
-rem @if exist "C:\wxWidgets-3.1.0" set "WXDIR=C:\wxWidgets-3.1.0"
+@if exist "C:\wxWidgets-3.1.0" set "WXDIR=C:\wxWidgets-3.1.0"
 rem @if exist "C:\storage\transmitterdan\wxWidgets-3.1.0" set "WXDIR=C:\storage\transmitterdan\wxWidgets-3.1.0"
 rem @if exist "E:\storage\transmitterdan\wxWidgets-3.1.0" set "WXDIR=E:\storage\transmitterdan\wxWidgets-3.1.0"
 rem @if exist "C:\storage\transmitterdan\wxWidgets" set "WXDIR=C:\storage\transmitterdan\wxWidgets"
-@if exist "E:\storage\transmitterdan\wxWidgets" set "WXDIR=E:\storage\transmitterdan\wxWidgets"
+rem @if exist "E:\storage\transmitterdan\wxWidgets" set "WXDIR=E:\storage\transmitterdan\wxWidgets"
+rem @if exist "C:\storage\transmitterdan\wxWidgets" set "WXDIR=C:\storage\transmitterdan\wxWidgets"
 rem @if exist "E:\storage\rework\wxWidgets" set "WXDIR=E:\storage\rework\wxWidgets"
 @if not "%WXDIR%"=="" goto :foundWX
 @echo Could not find wxWidgets anywhere.
@@ -79,8 +80,8 @@ call :add_to_path "%ProgramFiles%\Git\bin"
 
 rem Edit this line to the location where you keep BatchUTILS.
 rem As before, you only need one line that matches your system.
-call :add_to_path "C:\storage\transmitterdan\BatchUTILS"
-call :add_to_path "E:\storage\transmitterdan\BatchUTILS"
+@if exist "C:\storage\transmitterdan\BatchUTILS" call :add_to_path "C:\storage\transmitterdan\BatchUTILS"
+@if exist "E:\storage\transmitterdan\BatchUTILS" call :add_to_path "E:\storage\transmitterdan\BatchUTILS"
 
 @exit /B 0
 
