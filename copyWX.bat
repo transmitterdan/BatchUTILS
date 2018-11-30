@@ -10,15 +10,18 @@ if not "%WXDIR%"=="" goto foundWx
 @echo You have to set environment variable WIXDIR first.
 exit /b 1
 
-:foundWx
+call findvc.bat
 
+:foundWx
+set vcdll=vcv%vcts%_dll
+@echo "vcdll = %vcdll%"
 @echo Cleaning ..\buildwin\wxWidgets 
 if exist ..\buildwin\wxWidgets\NUL rmdir /S /Q ..\buildwin\wxWidgets
-@echo Copying wxWidgets libraries from %WXDIR%\lib\vc141_xp_dll
+@echo Copying wxWidgets libraries from %WXDIR%\lib\%vcdll%
 mkdir ..\buildwin\wxWidgets
-copy /V "%WXDIR%\lib\vc141_xp_dll\wx*u_*.dll" ..\buildwin\wxWidgets
+copy /V "%WXDIR%\lib\%vcdll%\wx*u_*.dll" ..\buildwin\wxWidgets
 del /Q .\Release\wx*u_*.dll
 del /Q .\Debug\wx*ud_*.dll
-copy /V "%WXDIR%\lib\vc141_xp_dll\wx*u_*.dll" .\Release
-copy /V "%WXDIR%\lib\vc141_xp_dll\wx*ud_*.dll" .\Debug
+copy /V "%WXDIR%\lib\%vcdll%\wx*u_*.dll" .\Release
+copy /V "%WXDIR%\lib\%vcdll%\wx*ud_*.dll" .\Debug
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%

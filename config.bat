@@ -10,18 +10,12 @@ rem ******************************************
 if  not exist .\Debug\NUL mkdir .\Debug
 if  not exist .\Release\NUL mkdir .\Release
 
+call findvc.bat
+
+if "vcgen"=="" goto noVC
+
 call copyWX.bat
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
-
-set __ts__=
-set __gen__=
-
-if "%VSINSTALLDIR%" == "%ProgramFiles(x86)%\Microsoft Visual Studio 12.0\" call :VS2013
-if "%VSINSTALLDIR%" == "%ProgramFiles(x86)%\Microsoft Visual Studio 14.0\" call :VS2015
-if "%VSINSTALLDIR%" == "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\" call :VS2017
-if "%VCINSTALLDIR%" == "%ProgramFiles(x86)%\Microsoft Visual Studio\Preview\Community\VC\" call :VS2017
-
-if "__gen__"=="" goto noVC
 
 if not exist .\CMakeCache.txt goto config
 del .\CMakeCache.txt
@@ -53,11 +47,11 @@ popd
 
 :configure
 popd
-echo configuring generator %__gen__% and toolset %__ts__%
-rem cmake -Wno-dev --warn-uninitialized -G "%__gen__%" -T "%__ts__%" -DOCPN_USE_VCPKG=ON -D CMAKE_TOOLCHAIN_FILE="e:\storage\transmitterdan\vcpkg\scripts\buildsystems\vcpkg.cmake" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
-cmake -Wno-dev -G "%__gen__%" -T "%__ts__%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
-set __ts__=
-set __gen__=
+echo configuring generator %vcgen% and toolset v%vcts%
+rem cmake -Wno-dev --warn-uninitialized -G "%vcgen%" -T "v%vcts%" -DOCPN_USE_VCPKG=ON -D CMAKE_TOOLCHAIN_FILE="e:\storage\transmitterdan\vcpkg\scripts\buildsystems\vcpkg.cmake" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
+cmake -Wno-dev -G "%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
+set vcts=
+set vcgen=
 exit /b 0
 
 :noVC
@@ -65,20 +59,3 @@ exit /b 0
 @echo VCINSTALLDIR=%VCINSTALLDIR%
 exit /b 1
 
-:VS2013
-echo Configuring for VS2013
-set "__gen__=Visual Studio 12 2013"
-set "__ts__=v120_xp"
-exit /b 0
-
-:VS2015
-echo Configuring for VS2015
-set "__gen__=Visual Studio 14 2015"
-set "__ts__=v140_xp"
-exit /b 0
-
-:VS2017
-echo Configuring for VS2017
-set "__gen__=Visual Studio 15 2017"
-set "__ts__=v141_xp"
-exit /b 0

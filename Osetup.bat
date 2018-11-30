@@ -18,19 +18,16 @@ goto :notfoundit
 @rem -------------------
 rem Edit these lines to tell the build tools where you have put the wxWidgets installation.
 rem You only need one line here. I have several versions of wxWidgets so I have many lines.
-rem But you only need one. I strongly recommend using the 3.0.2 version. It is compatible with
-rem most plugins.
+rem But you only need one. You may need a certain version to compatible with
+rem certain plugins.
 @if exist "C:\wxWidgets-2.8.12" set "WXDIR=C:\wxWidgets-2.8.12"
 @if exist "C:\wxWidgets-3.0.2" set "WXDIR=C:\wxWidgets-3.0.2"
 @if exist "C:\wxWidgets-3.0.3" set "WXDIR=C:\wxWidgets-3.0.3"
 @if exist "E:\wxWidgets-3.0.3" set "WXDIR=E:\wxWidgets-3.0.3"
+@if exist "C:\wxWidgets-3.1.0" set "WXDIR=C:\wxWidgets-3.1.0"
+@if exist "E:\wxWidgets-3.1.0" set "WXDIR=E:\wxWidgets-3.1.0"
 @if exist "C:\wxWidgets-3.1.1" set "WXDIR=C:\wxWidgets-3.1.1"
 @if exist "E:\wxWidgets-3.1.1" set "WXDIR=E:\wxWidgets-3.1.1"
-rem @if exist "C:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=C:\storage\transmitterdan\wxWidgets-3.0.2"
-rem @if exist "E:\storage\transmitterdan\wxWidgets-3.0.2" set "WXDIR=E:\storage\transmitterdan\wxWidgets-3.0.2"
-rem @if exist "C:\wxWidgets-3.1.0" set "WXDIR=C:\wxWidgets-3.1.0"
-rem @if exist "C:\storage\transmitterdan\wxWidgets-3.1.0" set "WXDIR=C:\storage\transmitterdan\wxWidgets-3.1.0"
-rem @if exist "E:\storage\transmitterdan\wxWidgets-3.1.0" set "WXDIR=E:\storage\transmitterdan\wxWidgets-3.1.0"
 @if exist "C:\storage\transmitterdan\wxWidgets" set "WXDIR=C:\storage\transmitterdan\wxWidgets"
 @if exist "E:\storage\transmitterdan\wxWidgets" set "WXDIR=E:\storage\transmitterdan\wxWidgets"
 @if not "%WXDIR%"=="" goto :foundWX
@@ -43,6 +40,7 @@ goto :noWX
 rem @ECHO "wxWidgets folder is %WXDIR%"
 
 call :add_to_path "%WXDIR%"
+call :add_to_path "%WXDIR%\lib\vc_dll"
 call :add_to_path "%WXDIR%\lib\vc141_xp_dll"
 :noWX
 
@@ -83,8 +81,8 @@ call :add_to_path "%ProgramFiles(x86)%\Graphviz2.38\bin"
 
 rem Edit this line to the location where you keep BatchUTILS.
 rem As before, you only need one line that matches your system.
-call :add_to_path "C:\storage\transmitterdan\BatchUTILS"
-call :add_to_path "E:\storage\transmitterdan\BatchUTILS"
+@if exist "C:\storage\transmitterdan\BatchUTILS" call :add_to_path "C:\storage\transmitterdan\BatchUTILS"
+@if exist "E:\storage\transmitterdan\BatchUTILS" call :add_to_path "E:\storage\transmitterdan\BatchUTILS"
 
 @exit /B 0
 
