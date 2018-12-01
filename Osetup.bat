@@ -37,6 +37,7 @@ goto :noWX
 :foundWX
 @echo Found most recent version of wxWidgets at %WXDIR%
 @set "WXWIN=%WXDIR%"
+@set "wxWIDGETS_ROOT_DIR=%WXDIR%"
 rem @ECHO "wxWidgets folder is %WXDIR%"
 
 call :add_to_path "%WXDIR%"

@@ -13,7 +13,7 @@ exit /b 1
 call findvc.bat
 
 :foundWx
-set vcdll=vcv%vcts%_dll
+set vcdll=vc%vcts%_dll
 @echo "vcdll = %vcdll%"
 @echo Cleaning ..\buildwin\wxWidgets 
 if exist ..\buildwin\wxWidgets\NUL rmdir /S /Q ..\buildwin\wxWidgets

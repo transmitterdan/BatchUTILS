@@ -5,7 +5,7 @@ time /t
 call findvc.bat
 
 set compvers=vc%vcts%
-set comp=v%vcts%
+set comp=%vcts%
 
 @echo compvers=%compvers%
 @echo comp=%comp%
