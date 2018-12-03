@@ -25,10 +25,24 @@ if "%mode%"=="DEBUG" goto setup
 goto usage
 
 :setup
-echo "Setting up source and destination folders"
+@echo "Setting up source and destination folders"
 set rdir1=%SRCFOLDER%\build\%mode%
 set pld1=%SRCFOLDER%\build\%mode%\plugins
 if "%2" == "PluginsOnly" goto copy_plugins
+
+@echo "Cleaning up old data files."
+if exist %rdir1%\configs\NUL rmdir /S /Q %rdir1%\configs
+if exist %rdir1%\doc\NUL rmdir /S /Q %rdir1%\doc
+if exist %rdir1%\gshhs\NUL rmdir /S /Q %rdir1%\gshhs
+if exist %rdir1%\s57data\NUL rmdir /S /Q %rdir1%\s57data
+if exist %rdir1%\raster_texture_cache\NUL rmdir /S /Q %rdir1%\raster_texture_cache
+if exist %rdir1%\share\NUL rmdir /S /Q %rdir1%\share
+if exist %rdir1%\sounds\NUL rmdir /S /Q %rdir1%\sounds
+if exist %rdir1%\tcdata\NUL rmdir /S /Q %rdir1%\tcdata
+if exist %rdir1%\uidata\NUL rmdir /S /Q %rdir1%\uidata
+if exist %rdir1%\wvsdata\NUL rmdir /S /Q %rdir1%\wvsdata
+if exist %rdir1%\bitmaps\NUL rmdir /S /Q %rdir1%\bitmaps
+@echo "Finished cleaning up old data files."
 
 @echo Copying DLLs...
 rem del /f %rdir1%\*.dll
@@ -49,41 +63,35 @@ rem if "%mode%" == "MINSIZEREL" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u
 
 
 @echo "Copying data files"
-if not exist %rdir1%\doc echo "running mkdir %rdir1%\doc"
-if not exist %rdir1%\doc mkdir %rdir1%\doc
-if not exist %rdir1%\gshhs echo "running mkdir %rdir1%\gshhs"
-if not exist %rdir1%\gshhs mkdir %rdir1%\gshhs
-if not exist %rdir1%\plugins echo "running mkdir %rdir1%\plugins"
-if not exist %rdir1%\plugins mkdir %rdir1%\plugins
-if not exist %rdir1%\s57data mkdir %rdir1%\s57data
-if not exist %rdir1%\share mkdir %rdir1%\share
-if not exist %rdir1%\sounds mkdir %rdir1%\sounds
-if not exist %rdir1%\tcdata mkdir %rdir1%\tcdata
-if not exist %rdir1%\uidata mkdir %rdir1%\uidata
-if not exist %rdir1%\uidata\traditional mkdir %rdir1%\uidata\traditional
-if not exist %rdir1%\uidata\journeyman mkdir %rdir1%\uidata\journeyman
-if not exist %rdir1%\uidata\journeyman_flat mkdir %rdir1%\uidata\journeyman_flat
-if not exist %rdir1%\uidata\MUI_flat mkdir %rdir1%\uidata\MUI_flat
+if not exist %rdir1%\doc\NUL echo "running mkdir %rdir1%\doc"
+if not exist %rdir1%\doc\NUL mkdir %rdir1%\doc
+if not exist %rdir1%\gshhs\NUL echo "running mkdir %rdir1%\gshhs"
+if not exist %rdir1%\gshhs\NUL mkdir %rdir1%\gshhs
+if not exist %rdir1%\plugins\NUL echo "running mkdir %rdir1%\plugins"
+if not exist %rdir1%\plugins\NUL mkdir %rdir1%\plugins
+if not exist %rdir1%\s57data\NUL mkdir %rdir1%\s57data
+if not exist %rdir1%\share\NUL mkdir %rdir1%\share
+if not exist %rdir1%\sounds\NUL mkdir %rdir1%\sounds
+if not exist %rdir1%\tcdata\NUL mkdir %rdir1%\tcdata
+if not exist %rdir1%\uidata\NUL mkdir %rdir1%\uidata
+if not exist %rdir1%\uidata\traditional\NUL mkdir %rdir1%\uidata\traditional
+if not exist %rdir1%\uidata\journeyman\NUL mkdir %rdir1%\uidata\journeyman
+if not exist %rdir1%\uidata\journeyman_flat\NUL mkdir %rdir1%\uidata\journeyman_flat
+if exist %SRCFOLDER%\data\svg\MUI_flat\NUL mkdir %rdir1%\uidata\MUI_flat
 
-if not exist %rdir1%\wvsdata mkdir %rdir1%\wvsdata
+if not exist %rdir1%\wvsdata\NUL mkdir %rdir1%\wvsdata
 
 :copy_uidata
+
 @echo Copying icons and syles
 copy /Y /V %SRCFOLDER%\src\bitmaps\styles.xml %rdir1%\uidata
-copy /Y /V %SRCFOLDER%\src\bitmaps\toolicons_traditional.png %rdir1%\uidata
-copy /Y /V %SRCFOLDER%\src\bitmaps\toolicons_journeyman.png %rdir1%\uidata
-copy /Y /V %SRCFOLDER%\src\bitmaps\toolicons_journeyman_flat.png %rdir1%\uidata
-copy /Y /V %SRCFOLDER%\src\bitmaps\iconAll.png %rdir1%\uidata
-copy /Y /V %SRCFOLDER%\src\bitmaps\iconMinimum.png %rdir1%\uidata
-copy /Y /V %SRCFOLDER%\src\bitmaps\iconRMinus.png %rdir1%\uidata
-copy /Y /V %SRCFOLDER%\src\bitmaps\iconRPlus.png %rdir1%\uidata
-copy /Y /V %SRCFOLDER%\src\bitmaps\iconStandard.png %rdir1%\uidata
-copy /Y /V %SRCFOLDER%\src\bitmaps\iconUserStd.png %rdir1%\uidata
+copy /Y /V %SRCFOLDER%\src\bitmaps\*.png %rdir1%\uidata
+copy /Y /V %SRCFOLDER%\src\bitmaps\*.svg %rdir1%\uidata
 @echo Copying toolbar icons
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\journeyman %rdir1%\uidata\journeyman
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\journeyman_flat %rdir1%\uidata\journeyman_flat
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\traditional %rdir1%\uidata\traditional
-xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\MUI_flat %rdir1%\uidata\MUI_flat
+if exist %rdir1%\uidata\MUI_flat\NUL xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\MUI_flat %rdir1%\uidata\MUI_flat
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\markicons %rdir1%\uidata\markicons
 @echo Copying documentation and misc. data
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\doc %rdir1%\doc
