@@ -44,7 +44,7 @@ cmake --build . --config Debug --target package
 if %ERRORLEVEL% GTR 0 goto quit
 move *.exe debug
 
-for %%F in ("debug\*.exe") do (
+for %%F in (".\debug\*.exe") do (
     set file=%%~nxF
     echo .\debug\!file! /D=%OpenCPNDIR%\build\debug
 	.\debug\!file! /D=%OpenCPNDIR%\build\debug
