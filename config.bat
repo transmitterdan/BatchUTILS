@@ -12,8 +12,7 @@ if  not exist .\Release\NUL mkdir .\Release
 
 call findvc.bat
 
-if "%vcgen%"=="" goto :noVC
-
+:copyWX 
 call copyWX.bat
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
 
