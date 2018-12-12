@@ -1,10 +1,8 @@
 @setlocal enableextensions enabledelayedexpansion
+@echo off
 rem Build non-debug version of OpenCPN. There is an optional command line to build the install package:
 rem build package - will build the install package and put it in the release folder.
 rem build package install - will build and run the installer on the local machine
-rem Be sure you set Visual Studio Debug options to use the -p option
-rem Use menu option Debug->opencpn Properties...->Configuration Properties->Debugging->Command Arguments and type in -p
-@echo off
 if "%1"=="" goto notarget
 rem cmake --build --trace-expand . "-DCMAKE_TOOLCHAIN_FILE=e:/storage/transmitterdan/vcpkg/scripts/buildsystems/vcpkg.cmake" --config Release --target %1
 cmake --build . --config Release --target %1
@@ -24,6 +22,8 @@ for %%I in (opencpn*.exe) do %%~nI
 if not "%1"=="package" goto finish
 if exist "%USERPROFILE%\Google Drive\NUL" move opencpn*.exe "%USERPROFILE%\Google Drive\"
 :finish
+@echo Be sure you set Visual Studio Debug options to use the -p option
+@echo Use menu option Debug->opencpn Properties...->Configuration Properties->Debugging->Command Arguments and type in -p
 date /t
 time /t
 exit /b 0

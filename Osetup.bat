@@ -1,19 +1,31 @@
 @echo off
 @echo "*******************************"
-@echo "*   Entering Osetup.bat...    *"
+@echo "*   Entering Osetup.bat...V1  *"
 @echo "*******************************"
 rem Edit these lines to match the place(s) you keep your opencpn cloned repository
 rem These are my locations but yours will be different so edit these lines. You don't need
 rem two lines. One is enough.
 if exist e:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=E:\storage\transmitterdan\OpenCPN"
 if exist c:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=C:\storage\transmitterdan\OpenCPN"
-if not ""=="%OpenCPNDIR%" goto :foundit
+if not ""=="%OpenCPNDIR%\build" goto :foundit
 @echo Cannot find OpenCPN development folder.
 goto :notfoundit
 
 :foundit
 @echo Found OpenCPN development folder at %OpenCPNDIR%
+set "VSCMD_START_DIR=%OpenCPNDir%"
 :notfoundit
+
+rem Edit this line to the location where you keep BatchUTILS.
+rem As before, you only need one line that matches your system.
+@if exist "C:\storage\transmitterdan\BatchUTILS" set "UTILDIR=C:\storage\transmitterdan\BatchUTILS"
+@if exist "E:\storage\transmitterdan\BatchUTILS" set "UTILDIR=E:\storage\transmitterdan\BatchUTILS"
+
+call "%UTILDIR%\findvc.bat"
+if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
+@echo "vcgen=%vcgen%"
+@echo "vcts=%vcts%"
+
 @rem wxWidgets
 @rem -------------------
 rem Edit these lines to tell the build tools where you have put the wxWidgets installation.
@@ -32,6 +44,7 @@ rem certain plugins.
 @if exist "E:\storage\transmitterdan\wxWidgets" set "WXDIR=E:\storage\transmitterdan\wxWidgets"
 @if not "%WXDIR%"=="" goto :foundWX
 @echo Could not find wxWidgets anywhere.
+
 goto :noWX
 
 :foundWX
@@ -41,8 +54,11 @@ goto :noWX
 rem @ECHO "wxWidgets folder is %WXDIR%"
 
 call :add_to_path "%WXDIR%"
-call :add_to_path "%WXDIR%\lib\vc_dll"
-call :add_to_path "%WXDIR%\lib\vc141_xp_dll"
+
+@echo Adding "%WXDIR%\lib\vc%vcts%_dll" wxDLLs to path
+
+call :add_to_path "%WXDIR%\lib\vc%vcts%_dll"
+
 :noWX
 
 rem Here we add all the tools that we need to build OpenCPN.
@@ -58,8 +74,12 @@ call :add_to_path "%ProgramFiles%\Poedit\GettextTools\bin"
 call :add_to_path "%ProgramFiles(x86)%\Poedit\GettextTools\bin"
 @rem CMake
 @rem -------------------
+if "%vcgen%"=="Visual Studio 16 2019" goto :skip_CMake
+if "%vcgen%"=="Visual Studio 15 2017" goto :skip_CMake
 call :add_to_path "%ProgramFiles%\CMake\bin"
 call :add_to_path "%ProgramFiles(x86)%\CMake\bin"
+:skip_CMake
+
 @rem 7-Zip
 @rem -------------------
 call :add_to_path "%ProgramFiles%\7-Zip"
@@ -75,10 +95,6 @@ call :add_to_path "%ProgramFiles%\Git\cmd"
 @rem -------------------
 call :add_to_path "%ProgramFiles%\doxygen\bin"
 call :add_to_path "%ProgramFiles(x86)%\Graphviz2.38\bin"
-@rem Bakefile
-@rem -------------------
-@rem call :add_to_path "C:\storage\transmitterdan\bakefile-1.2.5.1_beta-win"
-@rem call :add_to_path "E:\storage\transmitterdan\bakefile-1.2.5.1_beta-win"
 
 rem Edit this line to the location where you keep BatchUTILS.
 rem As before, you only need one line that matches your system.
@@ -87,18 +103,17 @@ rem As before, you only need one line that matches your system.
 
 @exit /B 0
 
-
 rem Don't change this stuff.
 @REM ------------------------------------------------------------------------
 :add_to_path
 if exist "%~1" (
 @   echo Adding %1 to path
     set "PATH=%~1;%PATH%"
-    goto return
+    goto :EOF
 ) else (
     if "%VSCMD_DEBUG%" GEQ "2" @echo [DEBUG:%~nx0] Could not add directory to PATH: "%~1"
-    if "%VSCMD_DEBUG%" GEQ "2" goto return
-	@echo Warning: Could not add directory to PATH "%~1"
+    if "%VSCMD_DEBUG%" GEQ "2" goto: EOF
+@   echo Warning: Could not add directory to PATH "%~1"
 )
-:return
-exit /B 0
+goto :EOF
+

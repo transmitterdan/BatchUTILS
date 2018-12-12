@@ -13,22 +13,22 @@ pushd ..
 for /f %%i in ('cd') do set SRCFOLDER=%%i
 popd
 @echo Setting up %SRCFOLDER% for %1 execution.
-if "%1"=="" goto usage
-if not exist %SRCFOLDER%\build\%1 goto usage
+if "%1"=="" goto :usage
+if not exist %SRCFOLDER%\build\%1 goto :usage
 set "str=%1"
 call :toupper
 set "mode=%upper%"
-if "%mode%"=="RELEASE" goto setup
-if "%mode%"=="RELWITHDEBINFO" goto setup
-if "%mode%"=="MINSIZEREL" goto setup
-if "%mode%"=="DEBUG" goto setup
-goto usage
+if "%mode%"=="RELEASE" goto :setup
+if "%mode%"=="RELWITHDEBINFO" goto :setup
+if "%mode%"=="MINSIZEREL" goto :setup
+if "%mode%"=="DEBUG" goto :setup
+goto :usage
 
 :setup
 @echo "Setting up source and destination folders"
 set rdir1=%SRCFOLDER%\build\%mode%
 set pld1=%SRCFOLDER%\build\%mode%\plugins
-if "%2" == "PluginsOnly" goto copy_plugins
+if "%2" == "PluginsOnly" goto :copy_plugins
 
 @echo "Cleaning up old data files."
 if exist %rdir1%\configs\NUL rmdir /S /Q %rdir1%\configs
@@ -106,8 +106,8 @@ for /d %%a in (
   "%SRCFOLDER%\build\_CPack_Packages\win32\NSIS\opencpn_*_setup"
 ) do set "ShareFolder=%%~fa\share"
 
-if "%ShareFolder%" == "" goto copy_crashrpt
-if not exist "%ShareFolder%" goto copy_crashrpt
+if "%ShareFolder%" == "" goto :copy_crashrpt
+if not exist "%ShareFolder%" goto :copy_crashrpt
 xcopy /Y /Q /H /E /K /I %ShareFolder% %rdir1%\share
 
 :copy_crashrpt
@@ -170,11 +170,11 @@ rem @echo arg0=%0
 rem @echo arg1=%1
 rem @echo arg2=%2
 rem @echo arg3=%3
-if not exist %SRCFOLDER%\build\plugins\%1\%2\%1.dll goto endCopyPlugin
+if not exist %SRCFOLDER%\build\plugins\%1\%2\%1.dll goto :endCopyPlugin
 if not exist %3 mkdir %3
 @echo "Copying %SRCFOLDER%\build\plugins\%1\%2\%1.dll--->%3"
 copy /Y /V %SRCFOLDER%\build\plugins\%1\%2\%1.dll %3
-if not exist %SRCFOLDER%\plugins\%1\data goto endCopyPlugin
+if not exist %SRCFOLDER%\plugins\%1\data goto :endCopyPlugin
 if not exist "%3\%1\data" mkdir "%3\%1\data"
 @echo "Xcopying %SRCFOLDER%\plugins\%1\data-->%3\%1\data"
 xcopy /Y /Q /H /E /K /I %SRCFOLDER%\plugins\%1\data %3\%1\data
