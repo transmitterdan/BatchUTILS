@@ -50,11 +50,12 @@ popd
 set "var=%vcts%"
 set "search=_xp"
 CALL set "test=%%var:%search%=%%"
-if "%test%" NEQ "%var%" (set "XP_FLAG=,5.01") else set "XP_FLAG="
+
+if "%test%"=="%var%" (set "XP_FLAG=") else (set "XP_FLAG=",5.01"")
+@echo XP_FLAG=%XP_FLAG%
 
 echo configuring generator %vcgen% and toolset v%vcts%
-rem cmake -Wno-dev --warn-uninitialized -G "%vcgen%" -T "v%vcts%" -DOCPN_USE_VCPKG=ON -D CMAKE_TOOLCHAIN_FILE="e:\storage\transmitterdan\vcpkg\scripts\buildsystems\vcpkg.cmake" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
-cmake -Wno-dev -G "%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS",5.01" ..
+cmake -Wno-dev -G "%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS""%XP_FLAG%"" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS""%XP_FLAG%"" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS""%XP_FLAG%"" ..
 set vcts=
 set vcgen=
 @endlocal

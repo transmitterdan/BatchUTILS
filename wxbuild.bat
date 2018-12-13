@@ -45,5 +45,6 @@ time /t
 goto :finished
 
 :quit
+time /t
 @echo Something bad happened...
 :finished
