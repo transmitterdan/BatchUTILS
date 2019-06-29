@@ -7,7 +7,7 @@ rem * to build OpenCPN. Run this in the      *
 rem * OpenCPN\build folder.                  *
 rem ******************************************
 if not "%WXDIR%"=="" goto foundWx
-@echo You have to set environment variable WIXDIR first.
+@echo You have to set environment variable WXDIR first.
 exit /b 1
 
 call findvc.bat

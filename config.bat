@@ -47,15 +47,22 @@ popd
 :configure
 popd
 
+set "var=%vcgen%"
+set "search=2019"
+CALL set "test=%%var:%search%=%%"
+if "%test%" NEQ "%var%" (set "A_FLAG=-AWin32") else set A_FLAG=
+@echo A_FLAG="%A_FLAG%"
+
 set "var=%vcts%"
 set "search=_xp"
 CALL set "test=%%var:%search%=%%"
 
-if "%test%"=="%var%" (set "XP_FLAG=") else (set "XP_FLAG=",5.01"")
+if "%test%"=="%var%" (set "XP_FLAG="/SUBSYSTEM:WINDOWS"" ) else (set "XP_FLAG="/SUBSYSTEM:WINDOWS,5.01"")
 @echo XP_FLAG=%XP_FLAG%
 
 echo configuring generator %vcgen% and toolset v%vcts%
-cmake -Wno-dev -G "%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" CMAKE_EXE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS""%XP_FLAG%"" CMAKE_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS""%XP_FLAG%"" CMAKE_SHARED_MODULE_LINKER_FLAGS=/SUBSYSTEM:WINDOWS""%XP_FLAG%"" ..
+@echo cmake -Wno-dev %A_FLAG% -G"%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D CMAKE_EXE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_MODULE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_SHARED_MODULE_LINKER_FLAGS=%XP_FLAG% ..
+cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D CMAKE_EXE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_MODULE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_SHARED_MODULE_LINKER_FLAGS=%XP_FLAG% ..
 set vcts=
 set vcgen=
 @endlocal

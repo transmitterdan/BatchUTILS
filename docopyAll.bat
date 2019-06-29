@@ -9,14 +9,16 @@ rem mode.                                                                       
 rem If the argument is "Release" (without ") then it will copy dependent files      *
 rem into the build\Release folder under the build folder.                           *
 rem *********************************************************************************
+set "str=%1"
+call :toupper
+if "%upper%"=="CLEAN" goto :finish
 pushd ..
 for /f %%i in ('cd') do set SRCFOLDER=%%i
 popd
 @echo Setting up %SRCFOLDER% for %1 execution.
 if "%1"=="" goto :usage
 if not exist %SRCFOLDER%\build\%1 goto :usage
-set "str=%1"
-call :toupper
+
 set "mode=%upper%"
 if "%mode%"=="RELEASE" goto :setup
 if "%mode%"=="RELWITHDEBINFO" goto :setup
@@ -74,6 +76,9 @@ if not exist %rdir1%\share\NUL mkdir %rdir1%\share
 if not exist %rdir1%\sounds\NUL mkdir %rdir1%\sounds
 if not exist %rdir1%\tcdata\NUL mkdir %rdir1%\tcdata
 if not exist %rdir1%\uidata\NUL mkdir %rdir1%\uidata
+if not exist %rdir1%\configs\NUL mkdir %rdir1%\configs
+if not exist %rdir1%\CrashReports\NUL mkdir %rdir1%\CrashReports
+if not exist %rdir1%\SENC\NUL mkdir %rdir1%\SENC
 if not exist %rdir1%\uidata\traditional\NUL mkdir %rdir1%\uidata\traditional
 if not exist %rdir1%\uidata\journeyman\NUL mkdir %rdir1%\uidata\journeyman
 if not exist %rdir1%\uidata\journeyman_flat\NUL mkdir %rdir1%\uidata\journeyman_flat
@@ -95,13 +100,13 @@ if exist %rdir1%\uidata\MUI_flat\NUL xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\s
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\markicons %rdir1%\uidata\markicons
 @echo Copying documentation and misc. data
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\doc %rdir1%\doc
+xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\configs %rdir1%\configs
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\gshhs %rdir1%\gshhs
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\s57data %rdir1%\s57data
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\sounds %rdir1%\sounds
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\tcdata %rdir1%\tcdata
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\wvsdata %rdir1%\wvsdata
-xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\license.txt %rdir1%
-
+xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data %rdir1%
 for /d %%a in (
   "%SRCFOLDER%\build\_CPack_Packages\win32\NSIS\opencpn_*_setup"
 ) do set "ShareFolder=%%~fa\share"
@@ -129,7 +134,7 @@ rem copy /v %PROGRAMDATA%\OpenCPN\CHRTLIST.DAT %rdir1%\CHRTLIST.DAT
 
 :copy_plugins
 for /D %%f in (%SRCFOLDER%\plugins\*) do call :handlePluginDir %1 %%f %pld1%
-
+:finish
 exit /b 0
 :usage
 endlocal

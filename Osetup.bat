@@ -51,6 +51,7 @@ goto :noWX
 @echo Found most recent version of wxWidgets at %WXDIR%
 @set "WXWIN=%WXDIR%"
 @set "wxWIDGETS_ROOT_DIR=%WXDIR%"
+@set "wxWIDGETS_LIB_DIR=%WXDIR%\lib\vc%vcts%_dll"
 rem @ECHO "wxWidgets folder is %WXDIR%"
 
 call :add_to_path "%WXDIR%"
@@ -74,8 +75,8 @@ call :add_to_path "%ProgramFiles%\Poedit\GettextTools\bin"
 call :add_to_path "%ProgramFiles(x86)%\Poedit\GettextTools\bin"
 @rem CMake
 @rem -------------------
-if "%vcgen%"=="Visual Studio 16 2019" goto :skip_CMake
-if "%vcgen%"=="Visual Studio 15 2017" goto :skip_CMake
+@rem if "%vcgen%"=="Visual Studio 16 2019" goto :skip_CMake
+@rem if "%vcgen%"=="Visual Studio 15 2017" goto :skip_CMake
 call :add_to_path "%ProgramFiles%\CMake\bin"
 call :add_to_path "%ProgramFiles(x86)%\CMake\bin"
 :skip_CMake
