@@ -18,7 +18,7 @@ if "%vcgen%"=="" goto :noVC
 set "var=%vcgen%"
 set "search=2019"
 CALL set "test=%%var:%search%=%%"
-if "%test%" NEQ "%var%" (set "A_FLAG=-A win32") else set A_FLAG=
+if "%test%" NEQ "%var%" (set "A_FLAG=-Awin32") else set A_FLAG=
 @echo A_FLAG="%A_FLAG%"
 
 set "var=%vcts%"
