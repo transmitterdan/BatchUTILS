@@ -1,4 +1,13 @@
-# Run this from CMD prompt
+# Before installing Ubuntu or Debian turn on WSL in Windows 10
+# Run these in PowerShell as Adminstrator
+Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux
+# Restart Windows 10
+
+# Install Ubuntu or Debian from Windows store
+# Then run WSL Ubuntu or Debian for first time to set up user and password
+
+# Run this from CMD prompt if you want to use WSL 2
 wsl --set-version Ubuntu 2
 
 # Run this from Ubuntu shell prompt
