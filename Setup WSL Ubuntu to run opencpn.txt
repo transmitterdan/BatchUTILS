@@ -15,7 +15,7 @@ echo xfce4-session > ~/.xsession
 # Edit /etc/xrdp/xrdp.ini to set the listening port. Probably you want 3390 or 3391 instead of 3389.
 sudo service xrdp restart
 
-sudo apt install -y git-core cmake build-essential wx-common libwxgtk3.0-dev libwxgtk-webview3.0-gtk3-dev gettext gpsd gpsd-clients libgps-dev libgtk2.0-dev liblzma-dev libsndfile1-dev libsqlite3-dev libbz2-dev liblz4-dev libtinyxml-dev libcurl4-openssl-dev libportaudio2 portaudio19-dev htop libelf-dev libexpat1-dev libcairo2-dev libarchive-dev libexif-dev libjpeg-dev
+sudo apt install -y git cmake build-essential wx-common libwxgtk3.0-dev libwxgtk-webview3.0-gtk3-dev gettext gpsd gpsd-clients libgps-dev libgtk2.0-dev liblzma-dev libsndfile1-dev libsqlite3-dev libbz2-dev liblz4-dev libtinyxml-dev libcurl4-openssl-dev libportaudio2 portaudio19-dev htop libelf-dev libexpat1-dev libcairo2-dev libarchive-dev libexif-dev libjpeg-dev
 
 git clone https://github.com/opencpn/opencpn
 
