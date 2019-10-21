@@ -5,9 +5,10 @@ Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-L
 # Restart Windows 10
 
 # Install Ubuntu or Debian from Windows store
-# Then run WSL Ubuntu or Debian for first time to set up user and password
+# Then from CMD or PS start Ubuntu or Debian to set up username and password
+WSL -d Ubuntu or WSL -d Debian
 
-# Run this from CMD prompt if you want to use WSL 2
+# Run this from Windows CMD or PS prompt if you want to use WSL 2
 wsl --set-version Ubuntu 2
 
 # Run this from Ubuntu shell prompt
@@ -22,7 +23,17 @@ sudo apt-get -y install xfce4 xdeb xrdp
 echo xfce4-session > ~/.xsession
 
 # Edit /etc/xrdp/xrdp.ini to set the listening port. Probably you want 3390 or 3391 instead of 3389.
+# Usually the local windows rdp server is already using 3389.
+sudo sed -i -- 's/3389/3390/g' /etc/xrdp/xrdp.ini
 sudo service xrdp restart
+
+# Set up ssh on port 2222 in case you want to access using WinSCP
+sudo service ssh stop
+sudo rm -v /etc/ssh/ssh_host_*
+sudo sed -i -- 's/#Port 22/Port 2222/g' /etc/ssh/sshd_config
+sudo sed -i -- 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+sudo dpkg-reconfigure openssh-server
+sudo service ssh start
 
 sudo apt install -y git cmake build-essential wx-common libwxgtk3.0-dev libwxgtk-webview3.0-gtk3-dev gettext gpsd gpsd-clients libgps-dev libgtk2.0-dev liblzma-dev libsndfile1-dev libsqlite3-dev libbz2-dev liblz4-dev libtinyxml-dev libcurl4-openssl-dev libportaudio2 portaudio19-dev htop libelf-dev libexpat1-dev libcairo2-dev libarchive-dev libexif-dev libjpeg-dev
 
