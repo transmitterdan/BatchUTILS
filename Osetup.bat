@@ -2,6 +2,12 @@
 @echo "*******************************"
 @echo "*   Entering Osetup.bat...V1  *"
 @echo "*******************************"
+rem
+rem Create symbolic link to this file in folder "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext".
+rem Be sure to use the complete path to this file as in the example below:
+rem mklink "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext\Osetup.bat" e:\storage\transmitterdan\BatchUtils\Osetup.bat
+rem Note you may have to open CMD prompt as administrator to create the link.
+rem
 rem Edit these lines to match the place(s) you keep your opencpn cloned repository
 rem These are my locations but yours will be different so edit these lines. You don't need
 rem two lines. One is enough.
@@ -56,7 +62,7 @@ rem @ECHO "wxWidgets folder is %WXDIR%"
 
 call :add_to_path "%WXDIR%"
 
-@echo Adding "%WXDIR%\lib\vc%vcts%_dll" wxDLLs to path
+rem @echo Adding "%WXDIR%\lib\vc%vcts%_dll" wxDLLs to path
 
 call :add_to_path "%WXDIR%\lib\vc%vcts%_dll"
 
@@ -99,8 +105,7 @@ call :add_to_path "%ProgramFiles(x86)%\Graphviz2.38\bin"
 
 rem Edit this line to the location where you keep BatchUTILS.
 rem As before, you only need one line that matches your system.
-@if exist "C:\storage\transmitterdan\BatchUTILS" call :add_to_path "C:\storage\transmitterdan\BatchUTILS"
-@if exist "E:\storage\transmitterdan\BatchUTILS" call :add_to_path "E:\storage\transmitterdan\BatchUTILS"
+@if exist "%UTILDIR%" call :add_to_path "%UTILDIR%"
 
 @exit /B 0
 
