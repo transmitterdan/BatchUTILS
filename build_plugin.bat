@@ -41,7 +41,6 @@ cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_
 if %ERRORLEVEL% GTR 0 goto :quit
 
 cmake --build . --config Debug --target clean
-rem cmake --build . --config Release --target clean
 cmake --build . --config RelWithDebInfo --target clean
 :noconfig
 copy /y %OpenCPNDIR%\build\debug\opencpn.lib .\

@@ -2,9 +2,24 @@
 rem Build debug version of OpenCPN then copy all needed support files to debug folder.
 call findvc.bat
 set vcdll=vc%vcts%_dll
-set wxDLL=wxbase313u_net_vc_custom.dll
-SET FILE1="%WXDIR%\lib\%vcdll%\%wxDLL%"
-SET FILE2="..\buildwin\wxWidgets\%wxDLL%"
+set wxDLL=wxbase*ud_
+rem Find wxbase dll file name
+for /f "tokens=*" %%a in ('dir "%WXDIR%\lib\%vcdll%\%wxDLL%*.dll" /b /s') do set p=%%a
+if defined p (
+echo %p%
+) else (
+echo File not found
+)
+
+SET FILE1="%p%"
+
+for /f "tokens=*" %%a in ('dir "..\buildwin\wxWidgets\%wxDLL%*.dll" /b /s') do set p=%%a
+if defined p (
+echo %p%
+) else (
+echo File not found
+)
+SET FILE2="%p%"
 
 FOR %%i IN (%FILE1%) DO SET DATE1=%%~ti
 FOR %%i IN (%FILE2%) DO SET DATE2=%%~ti
