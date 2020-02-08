@@ -13,6 +13,10 @@ if  not exist .\Release\NUL mkdir .\Release
 call findvc.bat
 
 :copyWX 
+cd "%OpenCPNDIR%\build"
+powershell -command "Invoke-WebRequest http://opencpn.navnux.org/build_deps/OpenCPN_buildwin-4.99a.7z -OutFile buildwin.7z; exit $LASTEXITCODE"
+7z x -y buildwin.7z -o..\buildwin
+del buildwin.7z
 call copyWX.bat
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
 
@@ -59,7 +63,6 @@ CALL set "test=%%var:%search%=%%"
 
 if "%test%"=="%var%" (set "XP_FLAG="/SUBSYSTEM:WINDOWS" " ) else (set "XP_FLAG="/SUBSYSTEM:WINDOWS,5.01" ")
 @echo XP_FLAG=%XP_FLAG%
-
 echo configuring generator %vcgen% and toolset v%vcts%
 @echo cmake -Wno-dev %A_FLAG% -G"%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
 cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
@@ -71,7 +74,7 @@ exit /b 0
 :noVC
 @echo Error: No compatible Visual Studio installed.
 @echo VCINSTALLDIR=%VCINSTALLDIR%
-@echo VSINSTALLDIR=%VCINSTALLDIR%
+@echo VSINSTALLDIR=%VSINSTALLDIR%
 @endlocal
 exit /b 1
 

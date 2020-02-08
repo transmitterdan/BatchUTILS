@@ -1,5 +1,6 @@
 @setlocal enableextensions enabledelayedexpansion
 @echo off
+@echo %0 %1 %2 %3
 @echo "Setting up dependent files."
 rem *********************************************************************************
 rem This batch file copies dependency files into the proper folder based on         *
@@ -11,26 +12,34 @@ rem into the build\Release folder under the build folder.                       
 rem *********************************************************************************
 set "str=%1"
 call :toupper
-if "%upper%"=="CLEAN" goto :finish
 pushd ..
 for /f %%i in ('cd') do set SRCFOLDER=%%i
 popd
 @echo Setting up %SRCFOLDER% for %1 execution.
 if "%1"=="" goto :usage
-if not exist %SRCFOLDER%\build\%1 goto :usage
 
 set "mode=%upper%"
 if "%mode%"=="RELEASE" goto :setup
 if "%mode%"=="RELWITHDEBINFO" goto :setup
 if "%mode%"=="MINSIZEREL" goto :setup
 if "%mode%"=="DEBUG" goto :setup
+if "%mode%"=="CLEAN" goto :setup
 goto :usage
 
 :setup
 @echo "Setting up source and destination folders"
+if not exist %SRCFOLDER%\build goto :usage
+if not "%mode%"=="CLEAN" goto :plugins
+
+set mode=RELEASE
+call :clean 
+set mode=DEBUG
+call :clean 
+exit /b 0
+
+:clean
 set rdir1=%SRCFOLDER%\build\%mode%
-set pld1=%SRCFOLDER%\build\%mode%\plugins
-if "%2" == "PluginsOnly" goto :copy_plugins
+
 
 @echo "Cleaning up old data files."
 if exist %rdir1%\configs\NUL rmdir /S /Q %rdir1%\configs
@@ -44,8 +53,10 @@ if exist %rdir1%\tcdata\NUL rmdir /S /Q %rdir1%\tcdata
 if exist %rdir1%\uidata\NUL rmdir /S /Q %rdir1%\uidata
 if exist %rdir1%\wvsdata\NUL rmdir /S /Q %rdir1%\wvsdata
 if exist %rdir1%\bitmaps\NUL rmdir /S /Q %rdir1%\bitmaps
+if exist %rdir1%\opencpn.exe del /Q %rdir1%\opencpn.exe
 @echo "Finished cleaning up old data files."
 
+:docopy
 @echo Copying DLLs...
 rem del /f %rdir1%\*.dll
 copy /Y /V %SRCFOLDER%\buildwin\gtk\*.dll %rdir1%
@@ -131,8 +142,11 @@ rem copy /v %PROGRAMDATA%\OpenCPN\opencpn.ini %rdir1%\opencpn.ini
 rem copy /v %PROGRAMDATA%\OpenCPN\navobj.xml %rdir1%\navobj.xml
 rem copy /v %PROGRAMDATA%\OpenCPN\navobj.xml.1 %rdir1%\navobj.xml.1
 rem copy /v %PROGRAMDATA%\OpenCPN\CHRTLIST.DAT %rdir1%\CHRTLIST.DAT
+exit /b /0
 
-:copy_plugins
+:plugins
+if not exist %SRCFOLDER%\build\%mode% call :clean
+set pld1=%SRCFOLDER%\build\%mode%\plugins
 for /D %%f in (%SRCFOLDER%\plugins\*) do call :handlePluginDir %1 %%f %pld1%
 :finish
 exit /b 0
@@ -175,7 +189,7 @@ rem @echo arg0=%0
 rem @echo arg1=%1
 rem @echo arg2=%2
 rem @echo arg3=%3
-if not exist %SRCFOLDER%\build\plugins\%1\%2\%1.dll goto :endCopyPlugin
+if not exist "%SRCFOLDER%\build\plugins\%1\%2\%1.dll" goto :endCopyPlugin
 if not exist %3 mkdir %3
 @echo "Copying %SRCFOLDER%\build\plugins\%1\%2\%1.dll--->%3"
 copy /Y /V %SRCFOLDER%\build\plugins\%1\%2\%1.dll %3
@@ -190,3 +204,4 @@ exit /b 0
 @rem convert str to uppercase and put it in variable upper
 for /f "usebackq delims=" %%I in (`powershell "\"%str%\".toUpper()"`) do set "upper=%%~I"
 exit /b 0
+
