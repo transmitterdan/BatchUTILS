@@ -85,6 +85,7 @@ call :add_to_path "%ProgramFiles(x86)%\Poedit\GettextTools\bin"
 @rem if "%vcgen%"=="Visual Studio 15 2017" goto :skip_CMake
 call :add_to_path "%ProgramFiles%\CMake\bin"
 call :add_to_path "%ProgramFiles(x86)%\CMake\bin"
+
 :skip_CMake
 
 @rem 7-Zip
