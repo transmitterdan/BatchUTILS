@@ -23,9 +23,11 @@ echo %p%
 echo File not found
 )
 
+SET FILE2="%p%"
+
 FOR %%i IN (%FILE1%) DO SET DATE1=%%~ti
 FOR %%i IN (%FILE2%) DO SET DATE2=%%~ti
-@echo %FILE1%:%DATE1% and %FILE2%:%DATE2%
+rem @echo %FILE1%:%DATE1% and %FILE2%:%DATE2%
 IF "%DATE1%"=="%DATE2%" ECHO Files %FILE1% and %FILE2% have same age && GOTO noCopy
 call copyWX.bat
 
