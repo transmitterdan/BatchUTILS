@@ -26,7 +26,9 @@ del buildwin.7z
 
 :copyWX 
 call copyWX.bat
-if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
+if %ERRORLEVEL% GTR 0 goto :Error
+
+call docopyAll.bat clean
 
 if not exist .\CMakeCache.txt goto :config
 del .\CMakeCache.txt
@@ -74,6 +76,7 @@ if "%test%"=="%var%" (set "XP_FLAG="/SUBSYSTEM:WINDOWS" " ) else (set "XP_FLAG="
 echo configuring generator %vcgen% and toolset v%vcts%
 @echo cmake -Wno-dev %A_FLAG% -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
 cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
+if %ERRORLEVEL% GTR 0 goto :Error
 set vcts=
 set vcgen=
 @endlocal
@@ -83,6 +86,9 @@ exit /b 0
 @echo Error: No compatible Visual Studio installed.
 @echo VCINSTALLDIR=%VCINSTALLDIR%
 @echo VSINSTALLDIR=%VSINSTALLDIR%
+
+:Error
+@echo Error: Configuration encountered an error.
+@echo Error: Configuration incomplete!
 @endlocal
 exit /b 1
-
