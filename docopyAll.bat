@@ -60,7 +60,7 @@ if exist %rdir1%\opencpn.exe del /Q %rdir1%\opencpn.exe
 @echo Copying DLLs...
 rem del /f %rdir1%\*.dll
 copy /Y /V %SRCFOLDER%\buildwin\gtk\*.dll %rdir1%
-copy /Y /V %SRCFOLDER%\buildwin\expat-2.1.5\*.dll %rdir1%
+copy /Y /V %SRCFOLDER%\buildwin\expat-2.2.5\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\buildwin\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\buildwin\*.crt %rdir1%
 if exist %SRCFOLDER%\buildwin\vc copy /Y /V %SRCFOLDER%\buildwin\vc\*.dll %rdir1%
