@@ -30,14 +30,14 @@ call copyWX.bat
 :noCopy
 if "%1"=="" goto :noconfig
 cmake --build . --config debug --target %1
-if %ERRORLEVEL% NEQ 0 goto :quit
+if %ERRORLEVEL% NEQ 0 goto :quitnow
 rem cmake --build . --config debug --target %1
 @echo Debug build %1 using cmake finished. ERRORLEVEL = %ERRORLEVEL%
 call docopyAll %1
 goto :finished
 :noconfig
 cmake --build . --config debug
-if %ERRORLEVEL% NEQ 0 goto :quit
+if %ERRORLEVEL% NEQ 0 goto :quitnow
 @echo Build using cmake finished. ERRORLEVEL = %ERRORLEVEL%
 call docopyAll debug
 :finished
@@ -46,6 +46,6 @@ call docopyAll debug
 date /t
 time /t
 exit /b 0
-:quit
+:quitnow
 @echo Debug build failed!
 exit /b 1

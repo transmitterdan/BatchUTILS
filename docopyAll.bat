@@ -193,6 +193,8 @@ if not exist "%SRCFOLDER%\build\plugins\%1\%2\%1.dll" goto :endCopyPlugin
 if not exist %3 mkdir %3
 @echo "Copying %SRCFOLDER%\build\plugins\%1\%2\%1.dll--->%3"
 copy /Y /V %SRCFOLDER%\build\plugins\%1\%2\%1.dll %3
+@echo "Copying %SRCFOLDER%\build\plugins\%1\%2\%1.pdb--->%3"
+copy /Y /V %SRCFOLDER%\build\plugins\%1\%2\%1.pdb %3
 if not exist %SRCFOLDER%\plugins\%1\data goto :endCopyPlugin
 if not exist "%3\%1\data" mkdir "%3\%1\data"
 @echo "Xcopying %SRCFOLDER%\plugins\%1\data-->%3\%1\data"

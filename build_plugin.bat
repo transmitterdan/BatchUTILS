@@ -43,7 +43,7 @@ if %ERRORLEVEL% GTR 0 goto :quit
 cmake --build . --config Debug --target clean
 cmake --build . --config RelWithDebInfo --target clean
 :noconfig
-copy /y %OpenCPNDIR%\build\debug\opencpn.lib .\
+xcopy /y %OpenCPNDIR%\build\debug\opencpn.lib .\
 if %ERRORLEVEL% GTR 0 goto :quit
 del /f /q .\*.exe
 del /f /q .\debug\*.exe
@@ -56,9 +56,9 @@ for %%F in (".\debug\*.exe") do (
     echo .\debug\!file! /D=%OpenCPNDIR%\build\debug
 	.\debug\!file! /D=%OpenCPNDIR%\build\debug
 )
-copy /y .\debug\*.pdb %OpenCPNDIR%\build\debug\plugins
+xcopy /y .\debug\*.pdb %OpenCPNDIR%\build\debug\plugins
  
-copy /y %OpenCPNDIR%\build\release\opencpn.lib .\
+xcopy /y %OpenCPNDIR%\build\release\opencpn.lib .\
 if %ERRORLEVEL% GTR 0 goto :quit
 del /f /q .\*.exe
 cmake --build . --config RelWithDebInfo --target package
