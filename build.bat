@@ -28,27 +28,27 @@ SET FILE2="%p%"
 FOR %%i IN (%FILE1%) DO SET DATE1=%%~ti
 FOR %%i IN (%FILE2%) DO SET DATE2=%%~ti
 rem @echo %FILE1%:%DATE1% and %FILE2%:%DATE2%
-IF "%DATE1%"=="%DATE2%" ECHO Files %FILE1% and %FILE2% have same age && GOTO noCopy
+IF "%DATE1%"=="%DATE2%" ECHO Files %FILE1% and %FILE2% have same age && GOTO :noCopy
 call copyWX.bat
 
 :noCopy
-if "%1"=="" goto notarget
+if "%1"=="" goto :notarget
 rem cmake --build --trace-expand . "-DCMAKE_TOOLCHAIN_FILE=e:/storage/transmitterdan/vcpkg/scripts/buildsystems/vcpkg.cmake" --config Release --target %1
 cmake --build . --config Release --target %1
-if %ERRORLEVEL% NEQ 0 goto quit
-goto install
+if %ERRORLEVEL% NEQ 0 goto :quit
+goto :install
 :notarget
 cmake --build . --config Release
-if %ERRORLEVEL% NEQ 0 goto quit
+if %ERRORLEVEL% NEQ 0 goto :quit
 call docopyAll Release
-goto finish
+goto :finish
 :install
-if not "%2"=="install" goto moveit
+if not "%2"=="install" goto :moveit
 @echo Starting install
 timeout /t 5
 for %%I in (opencpn*.exe) do %%~nI
 :moveit
-if not "%1"=="package" goto finish
+if not "%1"=="package" goto :finish
 if exist "%USERPROFILE%\Google Drive\NUL" move opencpn*.exe "%USERPROFILE%\Google Drive\"
 :finish
 @echo Be sure you set Visual Studio Debug options to use the -p option

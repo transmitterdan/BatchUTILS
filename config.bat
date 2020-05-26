@@ -14,13 +14,18 @@ cd "%OpenCPNDIR%\build"
 if  not exist .\Debug\NUL mkdir .\Debug
 if  not exist .\Release\NUL mkdir .\Release
 
+if "%1" == "nodl" goto :copyWX
+
 for /f "tokens=2 delims=[.]" %%x in ('ver') do set WINVER=%%x
 @echo WINVER=%WINVER%
 if not "%WINVER%"=="Version 10" goto :copyWX
 
 powershell -Command "Invoke-WebRequest http://opencpn.navnux.org/build_deps/OpenCPN_buildwin-4.99a.7z -OutFile buildwin.7z; exit $LASTEXITCODE"
-if not %ERRORLEVEL%==0 goto copyWX
+if %ERRORLEVEL%==0 goto :unzipWX
+@echo "Error detected downloading Windows build dependencies."
+goto :copyWX
 
+:unzipWX
 7z x -y buildwin.7z -o..\buildwin
 del buildwin.7z
 
