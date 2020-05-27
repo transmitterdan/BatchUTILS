@@ -4,32 +4,35 @@ rem Build non-debug version of OpenCPN. There is an optional command line to bui
 rem build package - will build the install package and put it in the release folder.
 rem build package install - will build and run the installer on the local machine
 call findvc.bat
+if %ERRORLEVEL% NEQ 0 goto :quit
+cd "%OpenCPNDIR%\build"
 set vcdll=vc%vcts%_dll
 set wxDLL=wxbase*u_
 rem Find wxbase dll file name
-for /f "tokens=*" %%a in ('dir "%WXDIR%\lib\%vcdll%\%wxDLL%*.dll" /b /s') do set p=%%a
-if defined p (
-echo %p%
+for /f "tokens=*" %%a in ('dir "%WXDIR%\lib\%vcdll%\%wxDLL%*.dll" /b /s') do set p1=%%a
+if defined p1 (
+echo %p1%
 ) else (
-echo File not found
+echo File1 not found
 )
 
-SET FILE1="%p%"
+SET FILE1="%p1%"
 
-for /f "tokens=*" %%a in ('dir "..\buildwin\wxWidgets\%wxDLL%*.dll" /b /s') do set p=%%a
-if defined p (
-echo %p%
+for /f "tokens=*" %%a in ('dir "..\buildwin\wxWidgets\%wxDLL%*.dll" /b /s') do set p2=%%a
+if defined p2 (
+echo %p2%
 ) else (
-echo File not found
+echo File2 not found
 )
 
-SET FILE2="%p%"
+SET FILE2="%p2%"
 
 FOR %%i IN (%FILE1%) DO SET DATE1=%%~ti
 FOR %%i IN (%FILE2%) DO SET DATE2=%%~ti
-rem @echo %FILE1%:%DATE1% and %FILE2%:%DATE2%
+@echo %FILE1%:%DATE1% and %FILE2%:%DATE2%
 IF "%DATE1%"=="%DATE2%" ECHO Files %FILE1% and %FILE2% have same age && GOTO :noCopy
 call copyWX.bat
+if %ERRORLEVEL% NEQ 0 goto :quit
 
 :noCopy
 if "%1"=="" goto :notarget

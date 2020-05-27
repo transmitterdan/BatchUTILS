@@ -3,6 +3,7 @@
 time /t
 
 call findvc.bat
+if %ERRORLEVEL% NEQ 0 goto :quit
 
 set compvers=vc%vcts%
 set comp=%vcts%
@@ -17,7 +18,11 @@ rmdir %compvers%_mswudll /s /q
 
 @echo deleting folder "..\..\lib\%compvers%_dll"
 rmdir ..\..\lib\%compvers%_dll /s /q
-@echo Delete the build output files from the last run.
+if %ERRORLEVEL% NEQ 0 goto :quit
+dir /s ..\..\lib\%compvers%_dll
+if %ERRORLEVEL%==0 goto :quit
+@echo Deleted the build output files from the last run.
+rem goto :quit
 
 :nodel
 
@@ -29,10 +34,12 @@ CALL set "test=%%var:%search%=%%"
 if "%test%"=="%var%" (set "XP_FLAG=") else (set "XP_FLAG="/SUBSYSTEM:WINDOWS,5.01"")
 @echo XP_FLAG=%XP_FLAG%
 
-@echo Copying setup0.h=>setup.h
+@echo "Copying setup0.h=>setup.h"
 copy /y ..\..\include\wx\msw\setup0.h ..\..\include\wx\msw\setup.h
 @if exist %compvers%x86_Release.txt del %compvers%x86_Release.txt
+if %ERRORLEVEL% NEQ 0 goto :quit
 @if exist %compvers%x86_Debug.txt del %compvers%x86_Debug.txt
+if %ERRORLEVEL% NEQ 0 goto :quit
 @echo nmake /f makefile.vc BUILD=debug SHARED=1 COMPILER_VERSION=%comp% CXXFLAGS=/MP CXXFLAGS=/D_USING_V110_SDK71_ CFLAGS=/MP CFLAGS=/D_USING_V110_SDK71_ LDFLAGS=%XP_FLAG% >> %compvers%x86_Debug.txt
 start /B nmake /f makefile.vc BUILD=debug SHARED=1 COMPILER_VERSION=%comp% CXXFLAGS=/MP CXXFLAGS=/D_USING_V110_SDK71_ CFLAGS=/MP CFLAGS=/D_USING_V110_SDK71_ LDFLAGS=%XP_FLAG% >> %compvers%x86_Debug.txt
 if %ERRORLEVEL% NEQ 0 goto :quit
