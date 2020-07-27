@@ -28,6 +28,7 @@ copy /V "%WXDIR%\lib\%vcdll%\wx*ud_*.dll" ..\buildwin\wxWidgets
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
 del /Q .\Release\wx*u_*.dll
 del /Q .\Debug\wx*ud_*.dll
+del /Q .\RelWithDebInfo\wx*u_*.dll
 copy /V "%WXDIR%\lib\%vcdll%\wx*u_*.dll" .\Release
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
 copy /V "%WXDIR%\lib\%vcdll%\wx*u_*.pdb" .\Release
@@ -35,6 +36,10 @@ if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
 copy /V "%WXDIR%\lib\%vcdll%\wx*ud_*.dll" .\Debug
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
 copy /V "%WXDIR%\lib\%vcdll%\wx*ud_*.pdb" .\Debug
+if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
+copy /V "%WXDIR%\lib\%vcdll%\wx*u_*.dll" .\RelWithDebInfo
+if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
+copy /V "%WXDIR%\lib\%vcdll%\wx*u_*.pdb" .\RelWithDebInfo
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
 exit /b 0
 :quit

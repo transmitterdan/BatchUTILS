@@ -13,6 +13,7 @@ cd "%OpenCPNDIR%\build"
 
 if  not exist .\Debug\NUL mkdir .\Debug
 if  not exist .\Release\NUL mkdir .\Release
+if  not exist .\RELWITHDEBINFO\NUL mkdir .\RELWITHDEBINFO
 
 if "%1" == "nodl" goto :copyWX
 

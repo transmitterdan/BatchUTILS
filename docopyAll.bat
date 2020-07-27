@@ -35,6 +35,8 @@ set mode=RELEASE
 call :clean 
 set mode=DEBUG
 call :clean 
+set mode=RELWITHDEBINFO
+call :clean
 exit /b 0
 
 :clean

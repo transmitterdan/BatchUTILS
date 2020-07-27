@@ -45,8 +45,8 @@ start /B nmake /f makefile.vc BUILD=debug SHARED=1 COMPILER_VERSION=%comp% CXXFL
 if %ERRORLEVEL% NEQ 0 goto :quit
 @REM Wait 1 second before starting release build in parallel with debug build
 ping -n 2 localhost >NUL
-@echo nmake /f makefile.vc BUILD=release SHARED=1 COMPILER_VERSION=%comp% CXXFLAGS=/MP CXXFLAGS=/D_USING_V110_SDK71_ CFLAGS=/MP CFLAGS=/D_USING_V110_SDK71_ LDFLAGS=%XP_FLAG% >> %compvers%x86_Release.txt
-nmake /f makefile.vc BUILD=release SHARED=1 COMPILER_VERSION=%comp% CXXFLAGS=/MP CXXFLAGS=/D_USING_V110_SDK71_ CFLAGS=/MP CFLAGS=/D_USING_V110_SDK71_ LDFLAGS=%XP_FLAG% >> %compvers%x86_Release.txt
+@echo nmake /f makefile.vc BUILD=release DEBUG_INFO=1 SHARED=1 COMPILER_VERSION=%comp% CXXFLAGS=/MP CXXFLAGS=/D_USING_V110_SDK71_ CFLAGS=/MP CFLAGS=/D_USING_V110_SDK71_ LDFLAGS=%XP_FLAG% >> %compvers%x86_Release.txt
+nmake /f makefile.vc BUILD=release DEBUG_INFO=1 SHARED=1 COMPILER_VERSION=%comp% CXXFLAGS=/MP CXXFLAGS=/D_USING_V110_SDK71_ CFLAGS=/MP CFLAGS=/D_USING_V110_SDK71_ LDFLAGS=%XP_FLAG% >> %compvers%x86_Release.txt
 if %ERRORLEVEL% NEQ 0 goto :quit
 time /t
 goto :finished
