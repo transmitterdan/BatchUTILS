@@ -41,3 +41,18 @@ git clone https://github.com/opencpn/opencpn
 
 cd opencpn && mkdir build && cd build && cmake .. && make -j 4
 
+## Restart WSL and WSL virtual network
+## Open PowerShell window in Adminstrator mode
+echo "Restarting WSL Service"
+Restart-Service LxssManager
+echo "Restarting Host Network Service"
+Stop-Service -name "hns"
+Start-Service -name "hns"
+echo "Restarting Hyper-V adapters"
+Get-NetAdapter -IncludeHidden | Where-Object `
+    {$_.InterfaceDescription.StartsWith('Hyper-V Virtual Switch Extension Adapter')} `
+    | Disable-NetAdapter -Confirm:$False
+Get-NetAdapter -IncludeHidden | Where-Object `
+    {$_.InterfaceDescription.StartsWith('Hyper-V Virtual Switch Extension Adapter')} `
+    | Enable-NetAdapter -Confirm:$False
+	
