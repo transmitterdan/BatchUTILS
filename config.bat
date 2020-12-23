@@ -21,7 +21,7 @@ for /f "tokens=2 delims=[.]" %%x in ('ver') do set WINVER=%%x
 @echo WINVER=%WINVER%
 if not "%WINVER%"=="Version 10" goto :copyWX
 
-powershell -Command "Invoke-WebRequest http://opencpn.navnux.org/build_deps/OpenCPN_buildwin-4.99a.7z -OutFile buildwin.7z; exit $LASTEXITCODE"
+powershell -Command "Invoke-WebRequest https://download.opencpn.org/s/oibxM3kzfzKcSc3/download -OutFile buildwin.7z; exit $LASTEXITCODE"
 if %ERRORLEVEL%==0 goto :unzipWX
 @echo "Error detected downloading Windows build dependencies."
 goto :copyWX
