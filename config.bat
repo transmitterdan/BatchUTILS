@@ -16,6 +16,7 @@ if  not exist .\Release\NUL mkdir .\Release
 if  not exist .\RELWITHDEBINFO\NUL mkdir .\RELWITHDEBINFO
 
 if "%1" == "nodl" goto :copyWX
+if "%1" == "cmake" goto :copyWX
 
 for /f "tokens=2 delims=[.]" %%x in ('ver') do set WINVER=%%x
 @echo WINVER=%WINVER%
@@ -31,13 +32,13 @@ goto :copyWX
 del buildwin.7z
 
 :copyWX 
+if "%1" == "cmake" goto :Cmake
+
 call copyWX.bat
 if %ERRORLEVEL% GTR 0 goto :Error
 
 call docopyAll.bat clean
 
-if not exist .\CMakeCache.txt goto :config
-del .\CMakeCache.txt
 :config
 
 @echo Updating all plugins to latest
@@ -67,6 +68,10 @@ popd
 :configure
 popd
 
+:Cmake
+if not exist .\CMakeCache.txt goto :Cmake1
+del .\CMakeCache.txt
+:Cmake1
 set "var=%vcgen%"
 set "search=2019"
 CALL set "test=%%var:%search%=%%"
@@ -80,11 +85,13 @@ CALL set "test=%%var:%search%=%%"
 if "%test%"=="%var%" (set "XP_FLAG="/SUBSYSTEM:WINDOWS" " ) else (set "XP_FLAG="/SUBSYSTEM:WINDOWS,5.01" ")
 @echo XP_FLAG=%XP_FLAG%
 echo configuring generator %vcgen% and toolset v%vcts%
-@echo cmake -Wno-dev %A_FLAG% -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
-cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
+@echo cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
+rem cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
+cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
 if %ERRORLEVEL% GTR 0 goto :Error
 set vcts=
 set vcgen=
+@echo Be sure you set Visual Studio startup project to [101;93m opencpn [0m.
 @endlocal
 exit /b 0
 
