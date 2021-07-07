@@ -34,10 +34,11 @@ del buildwin.7z
 :copyWX 
 if "%1" == "cmake" goto :Cmake
 
-call copyWX.bat
+rem call copyWX.bat
 if %ERRORLEVEL% GTR 0 goto :Error
 
 call docopyAll.bat clean
+del /s /q CMakeFiles\*.*
 
 :config
 

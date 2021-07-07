@@ -41,9 +41,12 @@ exit /b 0
 
 :clean
 set rdir1=%SRCFOLDER%\build\%mode%
+if not exist %rdir1%\NUL echo "running mkdir %rdir1%"
+if not exist %rdir1%\NUL mkdir %rdir1%
+if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
 
 
-@echo "Cleaning up old data files."
+@echo "Cleaning up old data files in %rdir1%..."
 if exist %rdir1%\configs\NUL rmdir /S /Q %rdir1%\configs
 if exist %rdir1%\doc\NUL rmdir /S /Q %rdir1%\doc
 if exist %rdir1%\gshhs\NUL rmdir /S /Q %rdir1%\gshhs
@@ -56,10 +59,10 @@ if exist %rdir1%\uidata\NUL rmdir /S /Q %rdir1%\uidata
 if exist %rdir1%\wvsdata\NUL rmdir /S /Q %rdir1%\wvsdata
 if exist %rdir1%\bitmaps\NUL rmdir /S /Q %rdir1%\bitmaps
 if exist %rdir1%\opencpn.exe del /Q %rdir1%\opencpn.exe
-@echo "Finished cleaning up old data files."
+@echo "Finished cleaning up old data files in %rdir1%..."
 
 :docopy
-@echo Copying DLLs...
+@echo "Copying DLLs...%SRCFOLDER%\buildwin->%rdir1%"
 rem del /f %rdir1%\*.dll
 copy /Y /V %SRCFOLDER%\buildwin\gtk\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\buildwin\expat-2.2.5\*.dll %rdir1%
@@ -76,27 +79,40 @@ rem if "%mode%" == "MINSIZEREL" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u
 @rem if not exist %rdir1%\locale mkdir %rdir1%\locale
 @rem xcopy /Y /V /H /E /K /I %WXDIR%\locale %rdir1%\locale
 
-
 @echo "Copying data files"
 if not exist %rdir1%\doc\NUL echo "running mkdir %rdir1%\doc"
 if not exist %rdir1%\doc\NUL mkdir %rdir1%\doc
+if not exist %rdir1%\charts\NUL echo "running mkdir %rdir1%\charts"
+if not exist %rdir1%\charts\NUL mkdir %rdir1%\charts
 if not exist %rdir1%\gshhs\NUL echo "running mkdir %rdir1%\gshhs"
 if not exist %rdir1%\gshhs\NUL mkdir %rdir1%\gshhs
 if not exist %rdir1%\plugins\NUL echo "running mkdir %rdir1%\plugins"
 if not exist %rdir1%\plugins\NUL mkdir %rdir1%\plugins
+if not exist %rdir1%\s57data\NUL echo "running mkdir %rdir1%\s57data"
 if not exist %rdir1%\s57data\NUL mkdir %rdir1%\s57data
+if not exist %rdir1%\share\NUL echo "running mkdir %rdir1%\share"
 if not exist %rdir1%\share\NUL mkdir %rdir1%\share
+if not exist %rdir1%\sounds\NUL echo "running mkdir %rdir1%\sounds"
 if not exist %rdir1%\sounds\NUL mkdir %rdir1%\sounds
+if not exist %rdir1%\tcdata\NUL echo "running mkdir %rdir1%\tcdata"
 if not exist %rdir1%\tcdata\NUL mkdir %rdir1%\tcdata
+if not exist %rdir1%\uidata\NUL echo "running mkdir %rdir1%\uidata"
 if not exist %rdir1%\uidata\NUL mkdir %rdir1%\uidata
+if not exist %rdir1%\configs\NUL echo "running mkdir %rdir1%\configs"
 if not exist %rdir1%\configs\NUL mkdir %rdir1%\configs
+if not exist %rdir1%\CrashReports\NUL echo "running mkdir %rdir1%\CrashReports"
 if not exist %rdir1%\CrashReports\NUL mkdir %rdir1%\CrashReports
+if not exist %rdir1%\SENC\NUL echo "running mkdir %rdir1%\SENC"
 if not exist %rdir1%\SENC\NUL mkdir %rdir1%\SENC
+if not exist %rdir1%\uidata\traditional\NUL echo "running mkdir %rdir1%\uidata\traditional"
 if not exist %rdir1%\uidata\traditional\NUL mkdir %rdir1%\uidata\traditional
+if not exist %rdir1%\uidata\journeyman\NUL echo "running mkdir %rdir1%\uidata\journeyman"
 if not exist %rdir1%\uidata\journeyman\NUL mkdir %rdir1%\uidata\journeyman
+if not exist %rdir1%\uidata\journeyman_flat\NUL echo "running mkdir %rdir1%\uidata\journeyman_flat"
 if not exist %rdir1%\uidata\journeyman_flat\NUL mkdir %rdir1%\uidata\journeyman_flat
+if exist %SRCFOLDER%\data\svg\MUI_flat\NUL echo "running mkdir %rdir1%\uidata\MUI_flat"
 if exist %SRCFOLDER%\data\svg\MUI_flat\NUL mkdir %rdir1%\uidata\MUI_flat
-
+if not exist %rdir1%\wvsdata\NUL @echo "running mkdir %rdir1%\wvsdata"
 if not exist %rdir1%\wvsdata\NUL mkdir %rdir1%\wvsdata
 
 :copy_uidata
@@ -112,11 +128,15 @@ xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\traditional %rdir1%\uidata\traditi
 if exist %rdir1%\uidata\MUI_flat\NUL xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\MUI_flat %rdir1%\uidata\MUI_flat
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\svg\markicons %rdir1%\uidata\markicons
 @echo Copying documentation and misc. data
+@echo xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\doc %rdir1%\doc
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\doc %rdir1%\doc
+@echo xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\configs %rdir1%\configs
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\configs %rdir1%\configs
+@echo xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\gshhs %rdir1%\gshhs
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\gshhs %rdir1%\gshhs
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\s57data %rdir1%\s57data
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\sounds %rdir1%\sounds
+@echo Copying "%SRCFOLDER%\data\tcdata" to "%rdir1%\tcdata" documentation and misc. data
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\tcdata %rdir1%\tcdata
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data\wvsdata %rdir1%\wvsdata
 xcopy /Y /Q /H /E /K /I  %SRCFOLDER%\data %rdir1%
@@ -170,6 +190,10 @@ endlocal
 @echo *       obtaining the .ini file and other key data files. You can set the startup *
 @echo *       command line option in Visual Studio configuration properties Debugging   *
 @echo *       section. Be sure to put -p in the Command Arguments option.               *
+@echo *                                                                                 *
+@echo *       Also, be sure to set the correct folder as the working directory inside   *
+@echo *       Visual Studio under Debug options.  For debug version add \Debug to the   *
+@echo *       default location (build folder).                                          *
 @echo ***********************************************************************************
 exit /b 1
 
@@ -192,13 +216,20 @@ rem @echo arg1=%1
 rem @echo arg2=%2
 rem @echo arg3=%3
 if not exist "%SRCFOLDER%\build\plugins\%1\%2\%1.dll" goto :endCopyPlugin
-if not exist %3 mkdir %3
+if not exist %3\NUL mkdir %3
 @echo "Copying %SRCFOLDER%\build\plugins\%1\%2\%1.dll--->%3"
 copy /Y /V %SRCFOLDER%\build\plugins\%1\%2\%1.dll %3
 @echo "Copying %SRCFOLDER%\build\plugins\%1\%2\%1.pdb--->%3"
 copy /Y /V %SRCFOLDER%\build\plugins\%1\%2\%1.pdb %3
 if not exist %SRCFOLDER%\plugins\%1\data goto :endCopyPlugin
-if not exist "%3\%1\data" mkdir "%3\%1\data"
+if not exist "%3\%1\NUL" mkdir "%3\%1"
+if %ERRORLEVEL% GTR 0 echo Cannot create %3\%1
+if not exist "%3\%1\NUL" mkdir "%3\%1"
+if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
+if not exist "%3\%1\data\NUL" mkdir "%3\%1\data"
+if %ERRORLEVEL% GTR 0 echo Cannot create %3\%1\data
+if not exist "%3\%1\data\NUL" mkdir "%3\%1\data"
+if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
 @echo "Xcopying %SRCFOLDER%\plugins\%1\data-->%3\%1\data"
 xcopy /Y /Q /H /E /K /I %SRCFOLDER%\plugins\%1\data %3\%1\data
 :endCopyPlugin

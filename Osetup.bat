@@ -11,8 +11,8 @@ rem
 rem Edit these lines to match the place(s) you keep your opencpn cloned repository
 rem These are my locations but yours will be different so edit these lines. You don't need
 rem two lines. One is enough.
-if exist e:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=E:\storage\transmitterdan\OpenCPN"
-if exist c:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=C:\storage\transmitterdan\OpenCPN"
+if exist e:\transmitterdan\OpenCPN set "OpenCPNDIR=E:\transmitterdan\OpenCPN"
+if exist c:\transmitterdan\OpenCPN set "OpenCPNDIR=C:\transmitterdan\OpenCPN"
 if not ""=="%OpenCPNDIR%\build" goto :foundit
 @echo Cannot find OpenCPN development folder.
 goto :notfoundit
@@ -24,8 +24,8 @@ set "VSCMD_START_DIR=%OpenCPNDir%"
 
 rem Edit this line to the location where you keep BatchUTILS.
 rem As before, you only need one line that matches your system.
-@if exist "C:\storage\transmitterdan\BatchUTILS" set "UTILDIR=C:\storage\transmitterdan\BatchUTILS"
-@if exist "E:\storage\transmitterdan\BatchUTILS" set "UTILDIR=E:\storage\transmitterdan\BatchUTILS"
+@if exist "C:\transmitterdan\BatchUTILS" set "UTILDIR=C:\transmitterdan\BatchUTILS"
+@if exist "E:\transmitterdan\BatchUTILS" set "UTILDIR=E:\transmitterdan\BatchUTILS"
 
 call "%UTILDIR%\findvc.bat"
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
@@ -46,8 +46,8 @@ rem certain plugins.
 @if exist "E:\wxWidgets-3.1.0" set "WXDIR=E:\wxWidgets-3.1.0"
 @if exist "C:\wxWidgets-3.1.1" set "WXDIR=C:\wxWidgets-3.1.1"
 @if exist "E:\wxWidgets-3.1.1" set "WXDIR=E:\wxWidgets-3.1.1"
-@if exist "C:\storage\transmitterdan\wxWidgets" set "WXDIR=C:\storage\transmitterdan\wxWidgets"
-@if exist "E:\storage\transmitterdan\wxWidgets" set "WXDIR=E:\storage\transmitterdan\wxWidgets"
+@if exist "C:\OA\wxWidgets" set "WXDIR=C:\OA\wxWidgets"
+@if exist "E:\OA\wxWidgets" set "WXDIR=E:\OA\wxWidgets"
 @if not "%WXDIR%"=="" goto :foundWX
 @echo Could not find wxWidgets anywhere.
 
