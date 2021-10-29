@@ -6,33 +6,6 @@ rem build package install - will build and run the installer on the local machin
 call findvc.bat
 if %ERRORLEVEL% NEQ 0 goto :quit
 cd "%OpenCPNDIR%\build"
-set vcdll=vc%vcts%_dll
-set wxDLL=wxbase*u_
-rem Find wxbase dll file name
-for /f "tokens=*" %%a in ('dir "%WXDIR%\lib\%vcdll%\%wxDLL%*.dll" /b /s') do set p1=%%a
-if defined p1 (
-echo %p1%
-) else (
-echo File1 not found
-)
-
-SET FILE1="%p1%"
-
-for /f "tokens=*" %%a in ('dir "..\buildwin\wxWidgets\%wxDLL%*.dll" /b /s') do set p2=%%a
-if defined p2 (
-echo %p2%
-) else (
-echo File2 not found
-)
-
-SET FILE2="%p2%"
-
-FOR %%i IN (%FILE1%) DO SET DATE1=%%~ti
-FOR %%i IN (%FILE2%) DO SET DATE2=%%~ti
-@echo %FILE1%:%DATE1% and %FILE2%:%DATE2%
-IF "%DATE1%"=="%DATE2%" ECHO Files %FILE1% and %FILE2% have same age && GOTO :noCopy
-call copyWX.bat
-if %ERRORLEVEL% NEQ 0 goto :quit
 
 :noCopy
 if "%1"=="" goto :notarget
@@ -54,8 +27,11 @@ for %%I in (opencpn*.exe) do %%~nI
 if not "%1"=="package" goto :finish
 if exist "%USERPROFILE%\Google Drive\NUL" move opencpn*.exe "%USERPROFILE%\Google Drive\"
 :finish
-@echo Be sure you set Visual Studio Debug options to use the -p option
-@echo Use menu option Debug->opencpn Properties...->Configuration Properties->Debugging->Command Arguments and type in -p
+@echo Be sure you set Visual Studio Debug options to use the [101;93m -p [0m option and set working directory
+
+@echo "Use menu option Debug->opencpn Properties...->Configuration Properties->Debugging->Command Arguments and type in -p"
+
+@echo Also set the working directory to [101;93m $(ProjectDir)\Release [0m
 date /t
 time /t
 exit /b 0

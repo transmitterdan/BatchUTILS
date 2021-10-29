@@ -21,7 +21,7 @@ if "%1" == "cmake" goto :copyWX
 for /f "tokens=2 delims=[.]" %%x in ('ver') do set WINVER=%%x
 @echo WINVER=%WINVER%
 if not "%WINVER%"=="Version 10" goto :copyWX
-
+rem powershell -Command "Invoke-WebRequest https://download.opencpn.org/s/54HsBDLNzRZLL6i/download -OutFile nsis-3.04-setup.exe
 powershell -Command "Invoke-WebRequest https://download.opencpn.org/s/oibxM3kzfzKcSc3/download -OutFile buildwin.7z; exit $LASTEXITCODE"
 if %ERRORLEVEL%==0 goto :unzipWX
 @echo "Error detected downloading Windows build dependencies."
@@ -34,10 +34,13 @@ del buildwin.7z
 :copyWX 
 if "%1" == "cmake" goto :Cmake
 
-call copyWX.bat
-if %ERRORLEVEL% GTR 0 goto :Error
+rem call copyWX.bat
+rem if %ERRORLEVEL% GTR 0 goto :Error
 
-call docopyAll.bat clean
+call docopyAll.bat CLEAN
+call docopyAll.bat RELEASE
+call docopyAll.bat DEBUG
+call doCopyAll.bat RELWITHDEBINFO
 
 :config
 
@@ -45,10 +48,10 @@ call docopyAll.bat clean
 pushd ..\plugins
 if not exist aisradar_pi\NUL goto :vfkaps
 ren aisradar_pi radar_pi
-cd radar_pi
+pushd radar_pi
 git pull upstream master
 git push
-cd ..
+popd
 ren radar_pi aisradar_pi
 
 :vfkaps
@@ -69,13 +72,23 @@ popd
 popd
 
 :Cmake
-if not exist .\CMakeCache.txt goto :Cmake1
-del .\CMakeCache.txt
+rem if not exist .\CMakeCache.txt goto :Cmake1
+rem del .\CMakeCache.txt
+
+rmdir /s /q CMakeFiles fpu_neon include lib libs mavx2 msse msse2 msse3 opencpn.dir plugins Resources S57ENC.dir SYMBOLS.dir Win32
+del /q *.*
+
 :Cmake1
+set A_FLAG=
 set "var=%vcgen%"
 set "search=2019"
 CALL set "test=%%var:%search%=%%"
-if "%test%" NEQ "%var%" (set "A_FLAG=-AWin32") else set A_FLAG=
+@echo test = "%test%"
+if "%test%" NEQ "%var%" (set "A_FLAG=-AWin32")
+set "search=2022"
+CALL set "test=%%var:%search%=%%"
+@echo test = "%test%"
+if "%test%" NEQ "%var%" (set "A_FLAG=-AWin32")
 @echo A_FLAG="%A_FLAG%"
 
 set "var=%vcts%"
@@ -85,9 +98,9 @@ CALL set "test=%%var:%search%=%%"
 if "%test%"=="%var%" (set "XP_FLAG="/SUBSYSTEM:WINDOWS" " ) else (set "XP_FLAG="/SUBSYSTEM:WINDOWS,5.01" ")
 @echo XP_FLAG=%XP_FLAG%
 echo configuring generator %vcgen% and toolset v%vcts%
-@echo cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
-rem cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
-cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
+@echo cmake -Wno-dev -DWX_LIB_DIR="%wxWidgets_LIB_DIR%" "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
+rem cmake -Wno-dev -DWX_LIB_DIR="%wxWidgets_LIB_DIR%" "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_SHARED_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
+cmake -Wno-dev -DWX_LIB_DIR="%wxWidgets_LIB_DIR%" "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_SYSTEM_VERSION=8.1 -D CMAKE_CXX_FLAGS="/MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP" -D OCPN_ENABLE_SYSTEM_CMD_SOUND=ON -D CMAKE_EXE_LINKER_FLAGS="%XP_FLAG% " -D CMAKE_MODULE_LINKER_FLAGS="%XP_FLAG% " ..
 if %ERRORLEVEL% GTR 0 goto :Error
 set vcts=
 set vcgen=

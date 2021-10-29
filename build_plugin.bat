@@ -15,11 +15,18 @@ call findvc.bat
 
 if "%vcgen%"=="" goto :noVC
 
+set A_FLAG=
 set "var=%vcgen%"
 set "search=2019"
 CALL set "test=%%var:%search%=%%"
-if "%test%" NEQ "%var%" (set "A_FLAG=-Awin32") else set A_FLAG=
+@echo test = "%test%"
+if "%test%" NEQ "%var%" (set "A_FLAG=-AWin32")
+set "search=2022"
+CALL set "test=%%var:%search%=%%"
+@echo test = "%test%"
+if "%test%" NEQ "%var%" (set "A_FLAG=-AWin32")
 @echo A_FLAG="%A_FLAG%"
+
 
 set "var=%vcts%"
 set "search=_xp"
@@ -35,8 +42,8 @@ if  not exist .\Debug\NUL mkdir .\Debug
 if  not exist .\Release\NUL mkdir .\Release
 
 echo configuring generator %vcgen% and toolset v%vcts%
-@echo cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D CMAKE_EXE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_MODULE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_SHARED_MODULE_LINKER_FLAGS=%XP_FLAG% ..
-cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D CMAKE_EXE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_MODULE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_SHARED_MODULE_LINKER_FLAGS=%XP_FLAG% ..
+@echo cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -DWX_LIB_DIR="%wxWidgets_LIB_DIR%" -D CMAKE_CXX_FLAGS="/D_USING_V110_SDK71_ /MP /EHsc" -D CMAKE_C_FLAGS="/MP /D_USING_V110_SDK71_" -D CMAKE_EXE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_MODULE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_SHARED_MODULE_LINKER_FLAGS=%XP_FLAG% ..
+cmake -Wno-dev "%A_FLAG%" -G"%vcgen%" -T "v%vcts%" -DWX_LIB_DIR="%wxWidgets_LIB_DIR%" -D CMAKE_CXX_FLAGS="/MP /EHsc /DWIN32" -D CMAKE_C_FLAGS="/MP" -D CMAKE_EXE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_MODULE_LINKER_FLAGS=%XP_FLAG% -D CMAKE_SHARED_MODULE_LINKER_FLAGS=%XP_FLAG% ..
 
 if %ERRORLEVEL% GTR 0 goto :quit
 

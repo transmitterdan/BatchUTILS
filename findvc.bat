@@ -1,6 +1,6 @@
 @echo off
 @echo Trying to find Visual Studio version
-echo "%VSINSTALLDIR%"
+echo Searching in "%VSINSTALLDIR%"
 set __ts__=
 set __gen__=
 
@@ -10,6 +10,7 @@ if /I "%VSINSTALLDIR%" == "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\" ca
 if /I "%VSINSTALLDIR%" == "%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Community\" call :VS2017
 if /I "%VSINSTALLDIR%" == "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Community\" call :VS2019
 if /I "%VSINSTALLDIR%" == "%ProgramFiles(x86)%\Microsoft Visual Studio\2019\Preview\" call :VS2019
+if /I "%VSINSTALLDIR%" == "%ProgramFiles%\Microsoft Visual Studio\2022\Preview\" call :VS2022
 echo "__get__ = %__get__%"
 if "%__gen__%" == "" call :noVC
 
@@ -48,4 +49,10 @@ exit /b 0
 echo Configuring for VS2019
 set "__gen__=Visual Studio 16 2019"
 set "__ts__=142"
+exit /b 0
+
+:VS2022
+echo Configuring for VS2022 Preview
+set "__gen__=Visual Studio 17 2022"
+set "__ts__=143"
 exit /b 0

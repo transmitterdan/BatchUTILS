@@ -19,6 +19,7 @@ sudo apt-get -y install xfce4 xubuntu-desktop xrdp
 
 # for debian
 sudo apt-get -y install xfce4 xdeb xrdp
+# Select the lighdm display manager when prompted
 
 echo xfce4-session > ~/.xsession
 
@@ -35,7 +36,7 @@ sudo sed -i -- 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/s
 sudo dpkg-reconfigure openssh-server
 sudo service ssh start
 
-sudo apt install -y git cmake build-essential wx-common libwxgtk3.0-dev libwxgtk-webview3.0-gtk3-dev gettext gpsd gpsd-clients libgps-dev libgtk2.0-dev liblzma-dev libsndfile1-dev libsqlite3-dev libbz2-dev liblz4-dev libtinyxml-dev libcurl4-openssl-dev libportaudio2 portaudio19-dev htop libelf-dev libexpat1-dev libcairo2-dev libarchive-dev libexif-dev libjpeg-dev
+sudo apt install -y git cmake build-essential sqlite3 libudev-dev libusb-1.0-0-dev gettext libunarr-dev gpsd gpsd-clients libgps-dev liblzma-dev libsndfile1-dev libsqlite3-dev libbz2-dev liblz4-dev libtinyxml-dev libcurl4-openssl-dev libportaudio2 portaudio19-dev htop libelf-dev libexpat1-dev libcairo2-dev libarchive-dev libexif-dev libjpeg-dev wx-common libgtk-3-dev flatpak libwxgtk-webview3.0-gtk3-dev libwxgtk3.0-gtk3-dev 
 
 git clone https://github.com/opencpn/opencpn
 
@@ -56,3 +57,33 @@ Get-NetAdapter -IncludeHidden | Where-Object `
     {$_.InterfaceDescription.StartsWith('Hyper-V Virtual Switch Extension Adapter')} `
     | Enable-NetAdapter -Confirm:$False
 	
+Building wxWidgets in WSL
+
+sudo apt install build-essential libwebkit2gtk-4.0-dev libunarr-dev libtiff-dev libnotify-dev libsecret-1-dev libcppunit-dev libjpeg-dev freeglut3 freeglut3-dev libsdl1.2-dev libgstreamer-plugins-good1.0-dev
+mkdir wxWidgets/gtkBuild
+cd wxWidgets/gtkBuild
+../configure --with-gtk --enable-debug
+make clean
+make -j 8
+
+# QT
+
+mkdir wxWidgets/qtBuild
+cd wxWidgets/qtBuild
+sudo apt -y install build-essential qt5-default libcppunit-dev libunarr-dev libjpeg-dev libtiff5-dev ubuntu-restricted-extras freeglut3 freeglut3-dev libsdl1.2-dev libgstreamer-plugins-good1.0-dev libqt5webview5-dev libqt5opengl5-dev
+../configure --with-qt --enable-debug
+make -j 8
+
+# Install Eclipse on Ubuntu WSL
+sudo apt install default-jre ninja-build
+# download Eclipse IDE for C++ Linux x86_64 from https://www.eclipse.org/downloads/packages/
+# extract .gz file after download completes
+sudo tar xf /mnt/c/Users/Dan/Downloads/eclipse-cpp-2020-12-R-linux-gtk-x86_64.tar.gz -C /opt
+sudo ln -s /opt/eclipse/eclipse /usr/local/bin/
+mkdir ~/transmitterdan/ecl
+cd ~/transmitterdan/ecl
+cmake -G "Eclipse CDT4" -DCMAKE_BUILD_TYPE=Debug ../opencpn
+eclipse
+
+
+cmake -DOCPN_USE_CHART_LIST:BOOL=ON -DOCPN_BUNDLE_GSHHS:BOOL=ON -DOCPN_BUNDLE_TCDATA:BOOL=ON -DOCPN_VERBOSE:BOOL=OFF ..
