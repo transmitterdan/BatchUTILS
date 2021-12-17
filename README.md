@@ -24,7 +24,13 @@ buildWX.bat - Builds wxWidgets. Note: I don't use this anymore as I build wxWidg
               DLLs that are compatible with OpenCPN latest master.
               
               For VS2017 & VS2019 I build wxWidgets using the batch file wxBuild.bat.
-              
+
+wxNew.bat - Builds wxWidgets using cMake.  This is the new way to build wxWidgets from the command line.  To use this, create 
+            a folder at the top of the wxWidgets tree.  The name should be 'cmake'.  So if your wxWidgets git repository is 
+            c:\myname\wxWidgets then create a folder called c:\myname\wxWidgets\cmake.  Then run wxNew.bat in a 
+            Visual Studio 2022 command prompt.  That should build an x86 DLL version of wxWidgets.  It will also copy the 
+            wxWidgets dll files to your OpenCPN build tree.
+           
 clean.bat - Cleans the OpenCPN build tree.
 
 clone_opencpn.bat - Once you create a fork of OpenCPN then use this batch file to clone your fork. Usage: clone_opencpn gihub_username
@@ -35,3 +41,4 @@ config.bat - Run this from the OpenCPN\build folder (you have to mkdir build) to
 dbbuild.bat - Builds debug version of OpenCPN. Otherwise it is like build.bat.
 
 docopyAll.bat - helper function for build.bat and dbbuild.bat
+

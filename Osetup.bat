@@ -6,7 +6,7 @@ rem
 rem Create symbolic link to this file in folder "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext".
 rem 
 rem Be sure to use the complete path to this file as in the example below:
-rem mklink "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext\Osetup.bat" e:\storage\transmitterdan\BatchUtils\Osetup.bat
+rem mklink "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext\Osetup.bat" \transmitterdan\BatchUtils\Osetup.bat
 rem Note you may have to open CMD prompt as administrator to create the link.
 rem
 rem Edit these lines to match the place(s) you keep your opencpn cloned repository
@@ -63,9 +63,9 @@ goto :noWX
 
 @ECHO wxWidgets_LIB_DIR folder is "%wxWidgets_LIB_DIR%"
 
-call :add_to_path "%wxWidgets_LIB_DIR%"
+rem call :add_to_path "%wxWidgets_LIB_DIR%"
 
-call :add_to_path "%wxWin%"
+rem call :add_to_path "%wxWin%"
 
 
 rem @echo Adding "%WXDIR%\lib\vc%vcts%_dll" wxDLLs to path
