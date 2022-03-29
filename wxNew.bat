@@ -27,21 +27,21 @@ curl -L -o %WXDIR%/cmake/webview2.zip https://www.nuget.org/api/v2/package/Micro
 cmake -E chdir %WXDIR%\cmake cmake -DCMAKE_CONFIGURATION_TYPES="Debug;Release;RelWithDebInfo" -DwxUSE_WINSOCK2:BOOL="0" -DwxBUILD_SAMPLES:STRING="OFF" -DwxBUILD_TESTS:STRING="CONSOLE_ONLY" -G "%vcgen%" -T "v%vcts%" -A Win32 %WXDIR%
 if NOT %ERRORLEVEL%==0 goto :oops
 
-rem cmake -E chdir %WXDIR%\cmake cmake --build . --config RelWithDebInfo --parallel 12 -- -maxCpuCount:12
-rem if NOT %ERRORLEVEL%==0 goto :oops
-
 cmake -E chdir %WXDIR%\cmake cmake --build . --config Debug --parallel 12 -- -maxCpuCount:12
 if NOT %ERRORLEVEL%==0 goto :oops
 
 cmake -E chdir %WXDIR%\cmake cmake --build . --config Release --parallel 12 -- -maxCpuCount:12
 if NOT %ERRORLEVEL%==0 goto :oops
 
+rem cmake -E chdir %WXDIR%\cmake cmake --build . --config RelWithDebInfo --parallel 12 -- -maxCpuCount:12
+rem if NOT %ERRORLEVEL%==0 goto :oops
+
 cd %wxdir%\cmake
 
 set targetDir=%wxdir%\lib\%vcdll%
 @echo Copying wxWidgets libraries from %wxdir%\cmake\lib\vc_dll to %targetDir%
+rmdir /S /Q %targetDir%
 mkdir %targetDir%
-del /Q %targetDir%\wx*u_*.dll
 xcopy /E /Y .\lib\vc_dll\*.* %targetDir%
 
 set targetDir=%OpenCPNDIR%\buildwin\wxWidgets

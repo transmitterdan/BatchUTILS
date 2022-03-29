@@ -59,7 +59,7 @@ set "__ts__=143"
 exit /b 0
 
 :VS2022
-echo Configuring for VS2022 Preview
+echo Configuring for VS2022
 set "__gen__=Visual Studio 17 2022"
 set "__ts__=143"
 exit /b 0

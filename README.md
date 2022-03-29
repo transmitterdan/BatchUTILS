@@ -1,44 +1,58 @@
 # BatchUTILS
 Windows batch files I use to make building OpenCPN and other things easier.
 
-I put all of these files in a folder that is on my PATH.
+After cloning this repository add the folder *batchutils* to your PATH environment.
 
-Osetup.bat - Called by C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\VsDevCmd.bat to add other utilities to the PATH.
-             Edit the VsDevCmd.bat file in administrator mode. Don't use Osetup.bat as it is but rather change it to match where your
-             programming utilities are installed.
-             NOTE: For Visual Studio 2017 and 2019 do not edit VsDevCmd.bat. Rather copy Osetup.bat to this folder:
-             
-             "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools\vsdevcmd\ext"
-             
-             During startup VS2017 and VS2019 scan this folder and call all the .bat files found therein.
+## Explation of files
+**Osetup.bat** - Called by "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext\VsDevCmd.bat to add other utilities to the PATH. Copy Osetup.bat to the folder: "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext". During startup, VS2017 and higher scan this folder and call all the .bat files found therein.
 
-findvc.bat - Tool to identify the version of Visual Studio this command prompt running and set up build variable accordingly.  Now 
-             we support muliple compilers so we had to create separate versions of wxWidgets libraries for each compiler flow. The
-             findvc.bat tool sets up the proper wxWidgets folder names for linking under each compiler flow.  This only works for 
-             VS2017 and above.
+You must edit this file to set some environment variables.  The following environment variables are set by Osetup.bat and they must be customized for your local situation.
 
-build.bat - Builds release version of OpenCPN from the VS command prompt. Optionally will create an installer package.
+- **OpenCPNDIR**: Location of your OpenCPN git repository
+- **UTILDIR**: Location of BatchUTILS git repository
+- **WXDIR**: Location of your wxWidgets git repository
 
-buildWX.bat - Builds wxWidgets. Note: I don't use this anymore as I build wxWidgets from my github fork. I open
-              wxWidgets\build\msw\wx_vc14.sln with Visual Studio 15. My OpenCPN branch of wxWidgets will create a wxWidgets set of 
-              DLLs that are compatible with OpenCPN latest master.
-              
-              For VS2017 & VS2019 I build wxWidgets using the batch file wxBuild.bat.
+**findvc.bat** - Tool to identify the version of Visual Studio this command prompt running and set up build variable accordingly.  Now 
+we support muliple compilers so we had to create separate versions of wxWidgets libraries for each compiler flow. The
+findvc.bat tool sets up the proper wxWidgets folder names for linking under each compiler flow.  This only works for 
+VS2017 and above.
 
-wxNew.bat - Builds wxWidgets using cMake.  This is the new way to build wxWidgets from the command line.  To use this, create 
-            a folder at the top of the wxWidgets tree.  The name should be 'cmake'.  So if your wxWidgets git repository is 
-            c:\myname\wxWidgets then create a folder called c:\myname\wxWidgets\cmake.  Then run wxNew.bat in a 
-            Visual Studio 2022 command prompt.  That should build an x86 DLL version of wxWidgets.  It will also copy the 
-            wxWidgets dll files to your OpenCPN build tree.
+**build.bat** - Builds release version of OpenCPN from the VS command prompt. Optionally will create an installer package.
+
+**wxNew.bat** - Builds wxWidgets using cMake.  This is the new way to build wxWidgets from the command line. Run wxNew.bat in a 
+Visual Studio 2022 command prompt.  That should build an x86 DLL version of wxWidgets.  It will also copy the 
+wxWidgets dll files to your OpenCPN build tree replacing the ones used for production release.
            
-clean.bat - Cleans the OpenCPN build tree.
+**wxBuild.bat** - Builds wxWidgets.
+              
+              I no longer use wxBuild.bat in favor of the wxNew.bat tool
 
-clone_opencpn.bat - Once you create a fork of OpenCPN then use this batch file to clone your fork. Usage: clone_opencpn gihub_username
-                    This should work for just about anybody as is.
+**clean.bat** - Cleans the OpenCPN build tree.
+
+**clone_opencpn.bat** - Once you create a fork of OpenCPN then use this batch file to clone your fork. Usage: clone_opencpn gihub_username
+This should work for just about anybody as is.
                     
-config.bat - Run this from the OpenCPN\build folder (you have to mkdir build) to set up Cmake and create all make files.
+**config.bat** - Run this from the OpenCPN\build folder (you have to mkdir build) to set up Cmake and create all make files.
 
-dbbuild.bat - Builds debug version of OpenCPN. Otherwise it is like build.bat.
+**dbbuild.bat** - Builds debug version of OpenCPN. Otherwise it is like build.bat.
 
-docopyAll.bat - helper function for build.bat and dbbuild.bat
+**docopyAll.bat** - helper function for build.bat and dbbuild.bat
 
+**delBranch.bat** - helper function to delete a branch in local and remote git repository.
+
+**To use these utilities the first time:**
+
+1. Open a Developer Command Prompt for VS 20XX and do the following:
+2. > cd root folder of your development tree
+3. > "clone_opencpn.bat" mygitusername
+4. > mkdir build
+5. > cd build
+6. > config
+7. > dbbuild
+8. > devenv
+
+The Visual Studio environment will open.  Navigate to the opencpn build folder and open the file "opencpn.sln".
+
+# How to build wxWidgets from git repository
+
+1. Type the command "wxNew" to build Release and Debug wxWidget libraries.
