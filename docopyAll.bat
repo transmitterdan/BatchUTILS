@@ -10,8 +10,21 @@ rem mode.                                                                       
 rem If the argument is "Release" (without ") then it will copy dependent files      *
 rem into the build\Release folder under the build folder.                           *
 rem *********************************************************************************
+
+goto :start
+
+:toupper
+echo ":toupper"
+@rem convert str to uppercase and put it in variable upper
+for /f "usebackq delims=" %%I in (`powershell "\"%str%\".toUpper()"`) do set "upper=%%~I"
+goto :EOF
+
+:start
+
 set "str=%1"
+
 call :toupper
+
 pushd ..
 for /f %%i in ('cd') do set SRCFOLDER=%%i
 popd
@@ -75,9 +88,9 @@ rem if "%mode%" == "RELEASE" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u_*.
 rem if "%mode%" == "RELWITHDEBINFO" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u_*.dll %rdir1%
 rem if "%mode%" == "MINSIZEREL" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u_*.dll %rdir1%
 
-@rem @echo Copying wxWidgets locale files
-@rem if not exist %rdir1%\locale mkdir %rdir1%\locale
-@rem xcopy /Y /V /H /E /K /I %WXDIR%\locale %rdir1%\locale
+rem @echo Copying wxWidgets locale files
+rem if not exist %rdir1%\locale mkdir %rdir1%\locale
+rem xcopy /Y /V /H /E /K /I %WXDIR%\locale %rdir1%\locale
 
 @echo "Copying data files"
 if not exist %rdir1%\doc\NUL echo "running mkdir %rdir1%\doc"
@@ -87,6 +100,7 @@ if not exist %rdir1%\charts\NUL mkdir %rdir1%\charts
 if not exist %rdir1%\gshhs\NUL echo "running mkdir %rdir1%\gshhs"
 if not exist %rdir1%\gshhs\NUL mkdir %rdir1%\gshhs
 if not exist %rdir1%\plugins\NUL echo "running mkdir %rdir1%\plugins"
+if exist %rdir1%\plugins del /q %rdir1%\plugins
 if not exist %rdir1%\plugins\NUL mkdir %rdir1%\plugins
 if not exist %rdir1%\s57data\NUL echo "running mkdir %rdir1%\s57data"
 if not exist %rdir1%\s57data\NUL mkdir %rdir1%\s57data
@@ -238,9 +252,3 @@ if not exist "%3\%1\data\NUL" echo Cannot create %3\%1\data
 xcopy /Y /Q /H /E /K /I %SRCFOLDER%\plugins\%1\data %3\%1\data
 :endCopyPlugin
 exit /b 0
-
-:toupper
-@rem convert str to uppercase and put it in variable upper
-for /f "usebackq delims=" %%I in (`powershell "\"%str%\".toUpper()"`) do set "upper=%%~I"
-exit /b 0
-
