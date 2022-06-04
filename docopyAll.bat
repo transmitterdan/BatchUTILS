@@ -14,7 +14,6 @@ rem ****************************************************************************
 goto :start
 
 :toupper
-echo ":toupper"
 @rem convert str to uppercase and put it in variable upper
 for /f "usebackq delims=" %%I in (`powershell "\"%str%\".toUpper()"`) do set "upper=%%~I"
 goto :EOF
@@ -76,12 +75,14 @@ if exist %rdir1%\opencpn.exe del /Q %rdir1%\opencpn.exe
 
 :docopy
 @echo "Copying DLLs...%SRCFOLDER%\buildwin->%rdir1%"
+copy /Y /V "%WindowsSdkDir%\redist\%WindowsSDKVersion%\ucrt\DLLs\x86" "%SRCFOLDER%\buildwin\vc"
+@echo "Visual C runtime DLLs copied..."
 rem del /f %rdir1%\*.dll
 copy /Y /V %SRCFOLDER%\buildwin\gtk\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\buildwin\expat-2.2.5\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\buildwin\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\buildwin\*.crt %rdir1%
-if exist %SRCFOLDER%\buildwin\vc copy /Y /V %SRCFOLDER%\buildwin\vc\*.dll %rdir1%
+if exist %SRCFOLDER%\buildwin\vc copy /Y /V %SRCFOLDER%\buildwin\vc\*.* %rdir1%
 rem @echo Copying wxWidgets DLL files...
 rem if "%mode%" == "DEBUG" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*ud_*.dll %rdir1%
 rem if "%mode%" == "RELEASE" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u_*.dll %rdir1%

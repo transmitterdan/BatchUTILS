@@ -33,6 +33,8 @@ if NOT %ERRORLEVEL%==0 goto :oops
 cmake -E chdir %WXDIR%\cmake cmake --build . --config Release --parallel 12 -- -maxCpuCount:12
 if NOT %ERRORLEVEL%==0 goto :oops
 
+rem cmake -E chdir %WXDIR%\cmake cmake --build . --config Install
+
 rem cmake -E chdir %WXDIR%\cmake cmake --build . --config RelWithDebInfo --parallel 12 -- -maxCpuCount:12
 rem if NOT %ERRORLEVEL%==0 goto :oops
 
@@ -76,7 +78,7 @@ exit /b 1
 del /Q %targetDir%\wx*u_*.dll
 del /Q "%targetDir%\locale\*.*"
 mkdir "%targetDir%\locale"
-for /f "tokens=*" %%p in ('dir "%wxdir%\locale\*.pot" /b /s') do (
+for /f "tokens=*" %%p in ('dir "%wxdir%\locale\*.mo" /b /s') do (
     if not "%1"=="/Q" cmake -E echo copy_if_different  "%%p" "%targetDir%\locale\%%~np%%~xp"
     cmake -E copy_if_different "%%p" "%targetDir%\locale\%%~np%%~xp"
 )
@@ -95,7 +97,7 @@ exit /b 0
 del /Q %targetDir%\wx*ud_*.dll
 del /Q "%targetDir%\locale\*.*"
 mkdir "%targetDir%\locale"
-for /f "tokens=*" %%p in ('dir "%wxdir%\locale\*.pot" /b /s') do (
+for /f "tokens=*" %%p in ('dir "%wxdir%\locale\*.mo" /b /s') do (
     if not "%1"=="/Q" cmake -E echo copy_if_different  "%%p" "%targetDir%\locale\%%~np%%~xp"
     cmake -E copy_if_different "%%p" "%targetDir%\locale\%%~np%%~xp"
 )
