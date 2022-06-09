@@ -4,7 +4,7 @@ Windows batch files I use to make building OpenCPN and other things easier.
 After cloning this repository add the folder *batchutils* to your PATH environment.
 
 ## Explation of files
-**Osetup.bat** - Called by "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext\VsDevCmd.bat to add other utilities to the PATH. Copy Osetup.bat to the folder: "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext". During startup, VS2017 and higher scan this folder and call all the .bat files found therein.
+**Osetup.bat** - Called by "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext\VsDevCmd.bat to add other utilities to the PATH. Make a symbolic link: mklink "%VSINSTALLDIR%\Common7\Tools\vsdevcmd\ext\osetup.bat" "\Path-To-BatchUtils\osetup.bat" . During startup, VS2017 and higher scan this folder and call all the .bat files found therein.
 
 You must edit this file to set some environment variables.  The following environment variables are set by Osetup.bat and they must be customized for your local situation.
 
