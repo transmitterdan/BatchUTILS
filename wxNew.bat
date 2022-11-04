@@ -24,19 +24,14 @@ curl -L -o %WXDIR%/cmake/webview2.zip https://www.nuget.org/api/v2/package/Micro
 7z x %WXDIR%\cmake\webview2.zip -o%WXDIR%\3rdparty\webview2 -aoa
 7z x %WXDIR%\cmake\webview2.zip -o%WXDIR%\cmake\3rdparty\webview2 -aoa
 
-cmake -E chdir %WXDIR%\cmake cmake -DCMAKE_CONFIGURATION_TYPES="Debug;Release;RelWithDebInfo" -DwxUSE_WINSOCK2:BOOL="0" -DwxBUILD_SAMPLES:STRING="OFF" -DwxBUILD_TESTS:STRING="CONSOLE_ONLY" -G "%vcgen%" -T "v%vcts%" -A Win32 %WXDIR%
+cmake -E chdir %WXDIR%\cmake cmake -DCMAKE_CONFIGURATION_TYPES="Debug;Release;RelWithDebInfo" -DwxBUILD_SAMPLES:STRING="OFF" -DwxBUILD_TESTS:STRING="CONSOLE_ONLY" -G "%vcgen%" -T "v%vcts%" -A Win32 %WXDIR%
 if NOT %ERRORLEVEL%==0 goto :oops
 
 cmake -E chdir %WXDIR%\cmake cmake --build . --config Debug --parallel 12 -- -maxCpuCount:12
 if NOT %ERRORLEVEL%==0 goto :oops
 
-cmake -E chdir %WXDIR%\cmake cmake --build . --config Release --parallel 12 -- -maxCpuCount:12
+cmake -E chdir %WXDIR%\cmake cmake --build . --config RelWithDebInfo --parallel 12 -- -maxCpuCount:12
 if NOT %ERRORLEVEL%==0 goto :oops
-
-rem cmake -E chdir %WXDIR%\cmake cmake --build . --config Install
-
-rem cmake -E chdir %WXDIR%\cmake cmake --build . --config RelWithDebInfo --parallel 12 -- -maxCpuCount:12
-rem if NOT %ERRORLEVEL%==0 goto :oops
 
 cd %wxdir%\cmake
 

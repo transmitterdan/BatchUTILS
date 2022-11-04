@@ -49,7 +49,7 @@ exit /b 0
 :VS2019
 echo Configuring for VS2019
 set "__gen__=Visual Studio 16 2019"
-set "__ts__=142"
+set "__ts__=141_xp"
 exit /b 0
 
 :VS2022PV
