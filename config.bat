@@ -10,6 +10,10 @@ rem ******************************************
 call findvc.bat
 
 cd "%OpenCPNDIR%\build"
+set "CACHE_DIR=%OpenCPNDIR%\cache"
+echo "CACHE_DIR = %CACHE_DIR%"
+if not exist %CACHE_DIR% (mkdir %CACHE_DIR%)
+if not exist %CACHE_DIR%\buildwin (mkdir %CACHE_DIR%\buildwin)
 
 if  not exist .\Debug\NUL mkdir .\Debug
 if  not exist .\Release\NUL mkdir .\Release
@@ -24,14 +28,14 @@ if not "%WINVER%"=="Version 10" goto :copyWX
 rem powershell -Command "Invoke-WebRequest https://download.opencpn.org/s/54HsBDLNzRZLL6i/download -OutFile nsis-3.04-setup.exe
 rem powershell -Command "[System.Net.ServicePointManager]::MaxServicePointIdleTime = 5000000; Invoke-WebRequest https://download.opencpn.org/s/oibxM3kzfzKcSc3/download -OutFile buildwin.7z; exit $LASTEXITCODE"
 mkdir %OpenCPNDIR%\buildwintemp
-curl -L -o %OpenCPNDIR%\buildwintemp\OCPNWindowsCoreBuildSupport.zip https://github.com/OpenCPN/OCPNWindowsCoreBuildSupport/archive/refs/tags/v0.1.zip
+curl -L -o %OpenCPNDIR%\buildwintemp\OCPNWindowsCoreBuildSupport.zip https://github.com/OpenCPN/OCPNWindowsCoreBuildSupport/archive/refs/tags/v0.3.zip
 if %ERRORLEVEL%==0 goto :unzipWX
 @echo "Error detected downloading Windows build dependencies."
 goto :copyWX
 
 :unzipWX
 7z x -y %OpenCPNDIR%\buildwintemp\OCPNWindowsCoreBuildSupport.zip -o%OpenCPNDIR%\buildwintemp
-XCOPY %OpenCPNDIR%\buildwintemp\OCPNWindowsCoreBuildSupport-0.1\buildwin %OpenCPNDIR%\buildwin /s /y
+XCOPY %OpenCPNDIR%\buildwintemp\OCPNWindowsCoreBuildSupport-0.3\buildwin %CACHE_DIR%\buildwin /s /y
 rmdir /s /q %OpenCPNDIR%\buildwintemp
 :copyWX 
 if "%1" == "cmake" goto :Cmake
@@ -77,9 +81,10 @@ popd
 rem if not exist .\CMakeCache.txt goto :Cmake1
 rem del .\CMakeCache.txt
 @echo Clearing the decks...
-rmdir /s /q CMakeFiles fpu_neon include lib libs mavx2 msse msse2 msse3 opencpn.dir plugins Resources S57ENC.dir SYMBOLS.dir Win32
+rmdir /s /q CMakeFiles fpu_neon include lib libs mavx2 msse msse2 msse3 opencpn.dir plugins Resources S57ENC.dir SYMBOLS.dir Win32 _CPackPackages
 del /q *.*
-del /s /q CMakeCache.txt
+rem del /s /q CMakeCache.txt
+del /s /q /f opencpn.exe opencpn-cmd.exe
 @echo Decks clear...
 
 :Cmake1
