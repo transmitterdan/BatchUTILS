@@ -44,7 +44,7 @@ rmdir /S /Q %targetDir%
 mkdir %targetDir%
 xcopy /E /Y .\lib\vc_dll\*.* %targetDir%
 
-set targetDir=%OpenCPNDIR%\buildwin\wxWidgets
+set targetDir=%OpenCPNDIR%\cache\buildwin\wxWidgets
 @echo Copying wxWidgets libraries from %wxdir%\lib\%vcdll% to %targetDir%
 call :updateWX %1
 call :updateWXdeb %1

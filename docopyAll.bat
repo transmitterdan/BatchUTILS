@@ -1,6 +1,6 @@
 
 @setlocal enableextensions enabledelayedexpansion
-@echo off
+@echo on
 @echo %0 %1 %2 %3
 @echo "Setting up dependent files."
 rem *********************************************************************************
@@ -85,11 +85,11 @@ copy /Y /V %SRCFOLDER%\cache\buildwin\expat-2.2.5\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\cache\buildwin\*.dll %rdir1%
 copy /Y /V %SRCFOLDER%\cache\buildwin\*.crt %rdir1%
 if exist %SRCFOLDER%\cache\buildwin\vc copy /Y /V %SRCFOLDER%\cache\buildwin\vc\*.* %rdir1%
-rem @echo Copying wxWidgets DLL files...
-rem if "%mode%" == "DEBUG" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*ud_*.dll %rdir1%
-rem if "%mode%" == "RELEASE" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u_*.dll %rdir1%
-rem if "%mode%" == "RELWITHDEBINFO" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u_*.dll %rdir1%
-rem if "%mode%" == "MINSIZEREL" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc141_dll\*u_*.dll %rdir1%
+@echo Copying wxWidgets DLL files...
+if "%mode%" == "DEBUG" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc%vcts%_dll\*ud_*.dll %rdir1%
+if "%mode%" == "RELEASE" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc%vcts%_dll\*u_*.dll %rdir1%
+if "%mode%" == "RELWITHDEBINFO" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc%vcts%_dll\*u_*.dll %rdir1%
+if "%mode%" == "MINSIZEREL" xcopy /Y /Q /H /E /K /I %WXDIR%\lib\vc%vcts%_dll\*u_*.dll %rdir1%
 
 rem @echo Copying wxWidgets locale files
 rem if not exist %rdir1%\locale mkdir %rdir1%\locale
