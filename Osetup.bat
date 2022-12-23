@@ -59,9 +59,11 @@ goto :noWX
 @set "wxWIN=%WXDIR%"
 @set "wxWidgets_ROOT_DIR=%WXDIR%"
 @set "wxWidgets_LIB_DIR=%WXDIR%\lib\vc%vcts%_dll"
-@ECHO wxWidgets folder is "%WXDIR%"
-
-@ECHO wxWidgets_LIB_DIR folder is "%wxWidgets_LIB_DIR%"
+@ECHO "wxWidgets folder is %WXDIR%"
+@ECHO "wxWidgets_LIB_DIR folder is %wxWidgets_LIB_DIR%"
+call :add_to_path "%wxWidgets_LIB_DIR%"
+if %errorlevel% == 0 goto :gettext
+@echo Error: Could not add wxWidgets to the Path
 
 rem call :add_to_path "%wxWidgets_LIB_DIR%"
 
@@ -83,11 +85,13 @@ rem don't have it will just skip over them so you don't have to delete
 rem any lines unless you need to.
 rem POedit
 rem -------------------
-
+:gettext
 call :add_to_path "%ProgramFiles(x86)%\Poedit\GettextTools\bin"
 if %errorlevel% == 0 goto :poedit
+echo 2
 call :add_to_path "%ProgramFiles%\Poedit\GettextTools\bin"
 if %errorlevel% == 0 goto :poedit
+echo 3
 call :add_to_path "%ProgramW6432%\Poedit\GettextTools\bin"
 if %errorlevel% == 0 goto :poedit
 @echo WARNING: Could not add GettextTools\bin to PATH
@@ -176,12 +180,12 @@ REM ------------------------------------------------------------------------
 :add_to_path
 if exist "%~1" (
 @   echo Adding %1 to path
-    set "PATH=%~1;%PATH%"
+    set "Path=%~1;%PATH%"
     exit /b 0
 ) else (
 rem    if "%VSCMD_DEBUG%" GEQ "2" @echo [DEBUG:%~nx0] Could not add directory to PATH: "%~1"
 rem    if "%VSCMD_DEBUG%" GEQ "2" goto: EOF
-rem @   echo Warning: Couldn't add directory to PATH "%~1"
+@   echo Warning: Couldn't add directory to PATH "%~1"
     exit /b 1
 )
 goto :EOF
