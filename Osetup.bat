@@ -12,8 +12,8 @@ rem
 rem Edit these lines to match the place(s) you keep your opencpn cloned repository
 rem These are my locations but yours will be different so edit these lines. You don't need
 rem two lines. One is enough.
-if exist c:\transmitterdan\OpenCPN set "OpenCPNDIR=C:\transmitterdan\OpenCPN"
-if exist d:\transmitterdan\OpenCPN set "OpenCPNDIR=D:\transmitterdan\OpenCPN"
+if exist c:\storage\transmitterdan\OpenCPN set "OpenCPNDIR=C:\storage\transmitterdan\OpenCPN"
+REM if exist d:\transmitterdan\OpenCPN set "OpenCPNDIR=D:\transmitterdan\OpenCPN"
 if not ""=="%OpenCPNDIR%\build" goto :foundit
 @echo Cannot find OpenCPN development folder.
 goto :notfoundit
@@ -25,8 +25,8 @@ set "VSCMD_START_DIR=%OpenCPNDir%"
 
 rem Edit this line to the location where you keep BatchUTILS.
 rem As before, you only need one line that matches your system.
-@if exist "C:\transmitterdan\BatchUTILS" set "UTILDIR=C:\transmitterdan\BatchUTILS"
-@if exist "D:\transmitterdan\BatchUTILS" set "UTILDIR=D:\transmitterdan\BatchUTILS"
+@if exist "C:\storage\transmitterdan\BatchUTILS" set "UTILDIR=C:\storage\transmitterdan\BatchUTILS"
+REM @if exist "D:\transmitterdan\BatchUTILS" set "UTILDIR=D:\transmitterdan\BatchUTILS"
 
 call "%UTILDIR%\findvc.bat"
 if %ERRORLEVEL% GTR 0 exit /b %ERRORLEVEL%
@@ -110,13 +110,13 @@ rem if "%vcgen%"=="Visual Studio 16 2019" goto :skip_CMake
 rem if "%vcgen%"=="Visual Studio 15 2017" goto :skip_CMake
 
 :CMake
-call :add_to_path "%ProgramW6432%\CMake\bin"
+call :add_to_path "%ProgramW6432%\CMake\bin" before
 if %errorlevel% == 0 goto :SevenZip
-call :add_to_path "%ProgramFiles%\CMake\bin"
+call :add_to_path "%ProgramFiles%\CMake\bin" before
 if %errorlevel% == 0 goto :SevenZip
-call :add_to_path "%ProgramFiles(x86)%\CMake\bin"
+call :add_to_path "%ProgramFiles(x86)%\CMake\bin" before
 if %errorlevel% == 0 goto :SevenZip
-@echo WARNING: Could not add SevenZip\bin to PATH
+@echo WARNING: Could not add CMake\bin to PATH
 
 :skip_CMake
 
@@ -169,8 +169,10 @@ if %errorlevel% == 0 goto :Utildir
 rem Edit this line to the location where you keep BatchUTILS.
 rem As before, you only need one line that matches your system.
 @if exist "%UTILDIR%" call :add_to_path "%UTILDIR%"
-if %errorlevel% == 0 goto :finish
+if %errorlevel% == 0 goto :ninja
 @echo WARNING: Could not add UTILDIR to PATH
+:ninja
+call :add_to_path "C:\OA\ninja\build-cmake\Release" before
 
 :finish
 @exit /B 0
@@ -180,7 +182,8 @@ REM ------------------------------------------------------------------------
 :add_to_path
 if exist "%~1" (
 @   echo Adding %1 to path
-    set "Path=%~1;%PATH%"
+    if "%~2" == "" (set "Path=%PATH%;%~1")
+	if "%~2" == "before" (set "Path=%~1;%PATH%")
     exit /b 0
 ) else (
 rem    if "%VSCMD_DEBUG%" GEQ "2" @echo [DEBUG:%~nx0] Could not add directory to PATH: "%~1"
