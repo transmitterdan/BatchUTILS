@@ -1,3 +1,5 @@
+# NOTE: This set of tools is obsolete and no longer maintained or recommended for use.
+
 # BatchUTILS
 Windows batch files I use to make building OpenCPN and other things easier.
 
